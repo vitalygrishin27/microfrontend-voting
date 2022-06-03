@@ -1,0 +1,24 @@
+{
+  "VOTING MANAGER": "МЕНЕДЖЕР ОЦІНЮВАННЯ",
+
+  "Main": "Головна",
+  "Members": "Учасники",
+  "Juries": "Жюрі",
+  "Contests": "Конкурси",
+  "Categories": "Категорії",
+  "Criteria": "Критерії",
+
+  "MEMBER MANAGER": "УЧАСНИКИ",
+  "Create": "Створити",
+  "Loading...": "Завантаження...",
+  "Photo": "Фото",
+  "Last name": "Прізвище",
+  "Name": "І’мя",
+  "Second name": "По_батькові",
+  "Institution/Place": "Установа/Місце",
+  "Contest": "Конкурс",
+  "Performances": "Номери",
+  "Actions": "Дії",
+  "Edit": "Редагувати",
+  "Delete": "Видалити"
+}

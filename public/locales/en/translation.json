@@ -1,0 +1,24 @@
+{
+  "VOTING MANAGER": "VOTING MANAGER",
+
+  "Main": "Main",
+  "Members": "Members",
+  "Juries": "Juries",
+  "Contests": "Contests",
+  "Categories": "Categories",
+  "Criteria": "Criteria",
+
+  "MEMBER MANAGER": "MEMBER MANAGER",
+  "Create": "Create",
+  "Loading...": "Loading...",
+  "Photo": "Photo",
+  "Last name": "Last name",
+  "Name": "Name",
+  "Second name": "Second name",
+  "Institution/Place": "Institution/Place",
+  "Contest": "Contest",
+  "Performances": "Performances",
+  "Actions": "Actions",
+  "Edit": "Edit",
+  "Delete": "Delete"
+}

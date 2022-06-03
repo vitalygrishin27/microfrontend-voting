@@ -1,0 +1,24 @@
+{
+  "VOTING MANAGER": "МЕНЕДЖЕР ОЦЕНИВАНИЯ",
+
+  "Main": "Главная",
+  "Members": "Учасники",
+  "Juries": "Жюри",
+  "Contests": "Конкурсы",
+  "Categories": "Категории",
+  "Criteria": "Критерии",
+
+  "MEMBER MANAGER": "УЧАСНИКИ",
+  "Create": "Создать",
+  "Loading...": "Загрузка...",
+  "Photo": "Фото",
+  "Last name": "Фамилия",
+  "Name": "Имя",
+  "Second name": "Отчество",
+  "Institution/Place": "Учреждение/Место",
+  "Contest": "Конкурс",
+  "Performances": "Номера",
+  "Actions": "Действия",
+  "Edit": "Редактировать",
+  "Delete": "Удалить"
+}
