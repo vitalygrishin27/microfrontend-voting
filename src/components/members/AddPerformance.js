@@ -13,7 +13,7 @@ function AddPerformance({setOpenModal}) {
     useEffect(() => {
         if (!categories) {
             dispatch(loadCategoriesAsync())
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = (e) => {

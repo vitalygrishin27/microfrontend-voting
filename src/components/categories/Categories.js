@@ -21,7 +21,7 @@ const Categories = () => {
         if (!categories) {
             dispatch(loadCategoriesAsync());
             dispatch(setToastShowing(false));
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const Categories = () => {
                 toast.warning("Delete was successful!")
                 dispatch(setToastShowing(false));
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
     return (

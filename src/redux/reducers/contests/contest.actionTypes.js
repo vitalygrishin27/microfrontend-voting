@@ -1,4 +1,4 @@
-export default {
+const actionTypes = {
     CONTEST_LOAD_START: 'CONTEST_LOAD_START',
     CONTEST_LOAD_SUCCESS: 'CONTEST_LOAD_SUCCESS',
     CONTEST_LOAD_ERROR: 'CONTEST_LOAD_ERROR',
@@ -23,3 +23,5 @@ export default {
 
     CHANGE_TOAST_SHOWING: 'CHANGE_TOAST_SHOWING'
 }
+
+export default actionTypes;

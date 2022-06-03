@@ -11,11 +11,8 @@ import {
 } from "../../redux/reducers/jury/jury.thunks";
 import {isEmpty} from "lodash";
 import {
-    changeSelectedCategories,
-    clearSelectedCategories,
     loadContestsAsync
 } from "../../redux/reducers/contests/contest.thunks";
-import {loadCategoriesAsync} from "../../redux/reducers/categories/category.thunks";
 
 const AddJury = () => {
     const [firstname, setFirstName] = useState("");
@@ -65,7 +62,7 @@ const AddJury = () => {
         if (!contests) {
             dispatch(loadContestsAsync());
             dispatch(setToastShowing(false));
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -78,7 +75,7 @@ const AddJury = () => {
                 dispatch(setToastShowing(false));
                 navigate("/juries");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     return (
@@ -131,7 +128,7 @@ const AddJury = () => {
                         <div className={"form-group mb-2"}>
                             <input id="imgInp" type={"file"} className={"form-control mb-3"}
                                    onChange={e => setPreview(e.target.value)}/>
-                            <img style={{"display": preview ? "inline-block" : "none"}}
+                            <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
                                  src={preview ? URL.createObjectURL(document.getElementById('imgInp').files[0]) : ""}
                                  width={"100"}
                                  height={"142"}/>

@@ -79,7 +79,7 @@ const setToastShowing = (flag) => ({
     payload: flag
 })
 
-export default {
+const actions = {
     juriesLoadStart,
     juriesLoadSuccess,
     juriesLoadError,
@@ -97,3 +97,5 @@ export default {
     clearSelectedContests,
     setToastShowing
 }
+
+export default actions;

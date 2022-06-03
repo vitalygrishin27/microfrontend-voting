@@ -1,4 +1,4 @@
-export default {
+const actionTypes = {
     MEMBER_LOAD_START: 'MEMBER_LOAD_START',
     MEMBER_LOAD_SUCCESS: 'MEMBER_LOAD_SUCCESS',
     MEMBER_LOAD_ERROR: 'MEMBER_LOAD_ERROR',
@@ -21,3 +21,5 @@ export default {
 
     CHANGE_TOAST_SHOWING: 'CHANGE_TOAST_SHOWING'
 }
+
+export default actionTypes;

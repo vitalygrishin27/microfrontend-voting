@@ -54,7 +54,7 @@ const AddMember = () => {
     useEffect(() => {
         if (!contests) {
             dispatch(loadContestsAsync())
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const AddMember = () => {
                 dispatch(setToastShowing(false));
                 navigate("/members");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const handleDeletePerformance = (performance) => {
@@ -134,7 +134,7 @@ const AddMember = () => {
                             <div className={"form-group mb-2"}>
                                 <input id="imgInpMember" type={"file"} className={"form-control mb-3"}
                                        onChange={e => setPreview(e.target.value)}/>
-                                <img style={{"display": preview ? "inline-block" : "none"}}
+                                <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
                                      src={preview ? URL.createObjectURL(document.getElementById('imgInpMember').files[0]) : ""}
                                      width={"100"}
                                      height={"142"}/>

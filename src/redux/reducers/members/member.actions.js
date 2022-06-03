@@ -81,7 +81,8 @@ const setToastShowing = (flag) => ({
     type: actionTypes.CHANGE_TOAST_SHOWING,
     payload: flag
 })
-export default {
+
+const actions = {
     memberLoadStart,
     memberLoadSuccess,
     memberLoadError,
@@ -99,3 +100,5 @@ export default {
     updateSelectedPerformancesList,
     setToastShowing
 }
+
+export default actions;

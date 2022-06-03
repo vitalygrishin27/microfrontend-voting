@@ -66,7 +66,7 @@ const setToastShowing = (flag) => ({
     type: actionTypes.CHANGE_TOAST_SHOWING,
     payload: flag
 })
-export default {
+const actions = {
     criteriaLoadStart,
     criteriaLoadSuccess,
     criteriaLoadError,
@@ -81,3 +81,5 @@ export default {
     criteriaDeleteError,
     setToastShowing
 }
+
+export default actions;

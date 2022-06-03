@@ -1,4 +1,4 @@
-export default {
+const actionTypes = {
     CATEGORIES_LOAD_START: 'CATEGORIES_LOAD_START',
     CATEGORIES_LOAD_SUCCESS: 'CATEGORIES_LOAD_SUCCESS',
     CATEGORIES_LOAD_ERROR: 'CATEGORIES_LOAD_ERROR',
@@ -21,3 +21,5 @@ export default {
 
     CHANGE_TOAST_SHOWING: 'CHANGE_TOAST_SHOWING'
 }
+
+export default actionTypes;

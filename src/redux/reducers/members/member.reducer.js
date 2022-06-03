@@ -1,6 +1,6 @@
 import actionTypes from "./member.actionTypes"
 import initialState from "./member.initialStates"
-import {isEmpty, isNull} from "lodash";
+import {isNull} from "lodash";
 
 const memberReducer = (state = initialState, {type, payload}) => {
     switch (type) {

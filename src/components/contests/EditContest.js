@@ -28,7 +28,7 @@ const EditContest = () => {
             setDescription(currentContest.description);
             setPreview(currentContest.photo);
             dispatch(updateSelectedCategoriesList({currentContest, categories}))
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentContest])
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const EditContest = () => {
                 dispatch(setToastShowing(false));
                 navigate("/contests");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const dispatch = useDispatch();
@@ -117,7 +117,7 @@ const EditContest = () => {
                             <div className={"form-group mb-2"}>
                                 <input id="imgInpEditContest" type={"file"} className={"form-control mb-3"}
                                        onChange={e => handleChangePhoto(e)}/>
-                                <img style={{"display": preview ? "inline-block" : "none"}}
+                                <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
                                      src={preview}
                                      width={"100"}
                                      height={"142"}/>

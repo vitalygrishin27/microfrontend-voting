@@ -1,4 +1,4 @@
-export default {
+const actionTypes = {
     CRITERIA_LOAD_START: 'CRITERIA_LOAD_START',
     CRITERIA_LOAD_SUCCESS: 'CRITERIA_LOAD_SUCCESS',
     CRITERIA_LOAD_ERROR: 'CRITERIA_LOAD_ERROR',
@@ -17,3 +17,5 @@ export default {
 
     CHANGE_TOAST_SHOWING: 'CHANGE_TOAST_SHOWING'
 }
+
+export default actionTypes;

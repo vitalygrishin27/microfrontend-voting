@@ -15,7 +15,7 @@ const Juries = () => {
             dispatch(loadContestsAsync())
         }
         dispatch(loadJuriesAsync());
-        dispatch(setToastShowing(false));
+        dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
 
@@ -28,7 +28,7 @@ const Juries = () => {
                 toast.warning("Delete was successful!")
                 dispatch(setToastShowing(false));
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
     return (
@@ -59,7 +59,7 @@ const Juries = () => {
                         {juries && juries.map((jury, id) => (
                             <tr key={id}>
                                 <td>{id + 1 + " (" + jury.id + ")"}</td>
-                                <td><img style={{"display": jury.photo ? "inline-block" : "none"}}
+                                <td><img alt="jury" style={{"display": jury.photo ? "inline-block" : "none"}}
                                          src={jury.photo ? jury.photo : ""}
                                          width={"50"}
                                          height={"71"}/></td>

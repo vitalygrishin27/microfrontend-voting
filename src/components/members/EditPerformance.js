@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react'
 import "./Modal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {loadCategoriesAsync} from "../../redux/reducers/categories/category.thunks";
-import {uid} from "uid";
-import {changeSelectedPerformances, updateSelectedPerformance} from "../../redux/reducers/members/member.thunks";
+import {updateSelectedPerformance} from "../../redux/reducers/members/member.thunks";
 
 function EditPerformance({performanceToEdit, setEditOpenModal}) {
     const [name, setName] = useState("");
@@ -13,7 +12,7 @@ function EditPerformance({performanceToEdit, setEditOpenModal}) {
     useEffect(() => {
         if (!categories) {
             dispatch(loadCategoriesAsync())
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

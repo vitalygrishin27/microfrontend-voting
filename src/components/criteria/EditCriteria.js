@@ -33,7 +33,7 @@ const EditCriteria = () => {
                 dispatch(setToastShowing(false));
                 navigate("/criteria");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const dispatch = useDispatch();

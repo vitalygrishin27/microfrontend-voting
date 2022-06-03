@@ -1,4 +1,4 @@
-export default {
+const actionTypes = {
     JURIES_LOAD_START: 'JURIES_LOAD_START',
     JURIES_LOAD_SUCCESS: 'JURIES_LOAD_SUCCESS',
     JURIES_LOAD_ERROR: 'JURIES_LOAD_ERROR',
@@ -21,3 +21,5 @@ export default {
 
     CHANGE_TOAST_SHOWING: 'CHANGE_TOAST_SHOWING'
 }
+
+export default actionTypes;

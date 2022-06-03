@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Trans, useTranslation} from "react-i18next";
+import {useTranslation} from "react-i18next";
 
 const Navbar = () => {
     const {t, i18n} = useTranslation()

@@ -37,7 +37,7 @@ const EditJury = () => {
             setPassword(currentJury.encryptedPassword);
             setPreview(currentJury.photo);
             dispatch(updateSelectedContestsList({currentJury, contests}))
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentJury])
 
     useEffect(() => {
@@ -50,7 +50,7 @@ const EditJury = () => {
                 dispatch(setToastShowing(false));
                 navigate("/juries");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const dispatch = useDispatch();
@@ -150,7 +150,7 @@ const EditJury = () => {
                             <div className={"form-group mb-2"}>
                                 <input id="imgInpEdit" type={"file"} className={"form-control mb-3"}
                                        onChange={e => handleChangePhoto(e)}/>
-                                <img style={{"display": preview ? "inline-block" : "none"}}
+                                <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
                                      src={preview}
                                      width={"100"}
                                      height={"142"}/>

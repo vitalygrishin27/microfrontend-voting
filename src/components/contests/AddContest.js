@@ -52,7 +52,7 @@ const AddContest = () => {
         if (!categories) {
             dispatch(loadCategoriesAsync());
             dispatch(setToastShowing(false));
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -65,7 +65,7 @@ const AddContest = () => {
                 dispatch(setToastShowing(false));
                 navigate("/contests");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const handleDeletePhoto = () => {
@@ -103,7 +103,7 @@ const AddContest = () => {
                         <div className={"form-group mb-2"}>
                             <input id="imgInpContest" type={"file"} className={"form-control mb-3"}
                                    onChange={e => setPreview(e.target.value)}/>
-                            <img style={{"display": preview ? "inline-block" : "none"}}
+                            <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
                                  src={preview ? URL.createObjectURL(document.getElementById('imgInpContest').files[0]) : ""}
                                  width={"100"}
                                  height={"142"}/>

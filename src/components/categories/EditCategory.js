@@ -32,7 +32,7 @@ const EditCategory = () => {
             setName(currentCategory.name);
             setDescription(currentCategory.description);
             dispatch(updateSelectedCriteriaList({currentCategory, criteria}))
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentCategory])
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const EditCategory = () => {
                 dispatch(setToastShowing(false));
                 navigate("/categories");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const dispatch = useDispatch();

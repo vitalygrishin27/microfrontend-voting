@@ -11,7 +11,7 @@ const Members = () => {
     const {isLoading, members, error, isDeleting, isToastShowing} = useSelector(state => state.members);
     useEffect(() => {
         dispatch(loadMembersAsync());
-        dispatch(setToastShowing(false));
+        dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Members = () => {
                 toast.warning("Delete was successful!")
                 dispatch(setToastShowing(false));
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
     return (
@@ -54,7 +54,7 @@ const Members = () => {
                         {members && members.map((member, id) => (
                             <tr key={id}>
                                 <td>{id + 1 + " (" + member.id + ")"}</td>
-                                <td><img style={{"display": member.photo ? "inline-block" : "none"}}
+                                <td><img alt="member" style={{"display": member.photo ? "inline-block" : "none"}}
                                          src={member.photo ? member.photo : ""}
                                          width={"50"}
                                          height={"71"}/></td>

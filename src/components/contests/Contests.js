@@ -16,7 +16,7 @@ const Contests = () => {
             dispatch(loadCategoriesAsync())
         }
         dispatch(loadContestsAsync());
-        dispatch(setToastShowing(false));
+        dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const Contests = () => {
                 toast.warning("Delete was successful!")
                 dispatch(setToastShowing(false));
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
     return (
@@ -56,7 +56,7 @@ const Contests = () => {
                         {contests && contests.map((contest, id) => (
                             <tr key={id}>
                                 <td>{id + 1 + "/" + contest.id}</td>
-                                <td><img style={{"display": contest.photo ? "inline-block" : "none"}}
+                                <td><img alt="preview" style={{"display": contest.photo ? "inline-block" : "none"}}
                                          src={contest.photo ? contest.photo : ""}
                                          width={"50"}
                                          height={"71"}/></td>
@@ -76,7 +76,7 @@ const Contests = () => {
                                             className="btn btn-small btn-danger mx-2 mb-1">Delete
                                     </button>
                                     <Link to={`/contests/sort/${contest.id}`}
-                                            className="btn btn-small btn-warning mb-1">Manage performances
+                                          className="btn btn-small btn-warning mb-1">Manage performances
                                     </Link>
                                 </td>
                             </tr>

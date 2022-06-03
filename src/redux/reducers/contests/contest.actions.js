@@ -86,7 +86,7 @@ const setToastShowing = (flag) => ({
     payload: flag
 })
 
-export default {
+const actions = {
     contestLoadStart,
     contestLoadSuccess,
     contestLoadError,
@@ -105,3 +105,4 @@ export default {
     submitPerformanceToAssessmentSuccess,
     setToastShowing
 }
+export default actions;

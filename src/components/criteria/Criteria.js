@@ -12,7 +12,7 @@ const Criteria = () => {
         if (!criteria) {
             dispatch(loadCriteriaAsync());
             dispatch(setToastShowing(false));
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const Criteria = () => {
                 toast.warning("Delete was successful!")
                 dispatch(setToastShowing(false));
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
     return (

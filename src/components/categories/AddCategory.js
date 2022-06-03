@@ -34,7 +34,7 @@ const AddCategory = () => {
         if (!criteria) {
             dispatch(loadCriteriaAsync());
             dispatch(setToastShowing(false));
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -47,7 +47,7 @@ const AddCategory = () => {
                 dispatch(setToastShowing(false));
                 navigate("/categories");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     const handleChangeCriteriaToCategory = (checked, criteria) => {

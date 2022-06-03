@@ -80,7 +80,8 @@ const setToastShowing = (flag) => ({
     type: actionTypes.CHANGE_TOAST_SHOWING,
     payload: flag
 })
-export default {
+
+const actions = {
     categoriesLoadStart,
     categoriesLoadSuccess,
     categoriesLoadError,
@@ -98,3 +99,5 @@ export default {
     clearSelectedCriteria,
     setToastShowing
 }
+
+export default actions;

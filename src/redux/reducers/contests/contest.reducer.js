@@ -1,4 +1,3 @@
-import axios from "axios";
 import actionTypes from "./contest.actionTypes"
 import initialState from "./contest.initialStates"
 

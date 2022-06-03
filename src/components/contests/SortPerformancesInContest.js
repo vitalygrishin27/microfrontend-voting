@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {loadContestsAsync} from "../../redux/reducers/contests/contest.thunks";
@@ -37,14 +37,9 @@ const SortPerformancesInContest = () => {
         }
         if (!orderWasChanged) {
             dispatch(loadPerformancesByContestAsync(currentContest.id));
-        } else {
-            console.log(document.getElementById("saveOrder").value)
-            document.getElementById("saveOrder").textContent = "You should save previous order first and then reload data. To discard changes reload page(F5)"
         }
 
-        dispatch(setToastShowing(false));
-        console.log(performances)
-        console.log(currentContest)
+        dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -55,9 +50,8 @@ const SortPerformancesInContest = () => {
             } else if (!isSaving) {
                 toast.success("Saving was successful!")
                 dispatch(setToastShowing(false));
-                //  navigate("/contests");
             }
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
     function handleOnDragEnd(result) {
@@ -100,7 +94,8 @@ const SortPerformancesInContest = () => {
                     <h1 id="rt" className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>MANAGE
                         PERFORMANCES</h1>
                     {isLoading && <h3 style={{"color": "red"}}>Loading...</h3>}
-                    <h5 id="saveOrder" style={{"color": "red"}}/>
+                    {orderWasChanged && <h5 id="saveOrder" style={{"color": "red"}}>You should save previous order first and then reload data. To discard changes reload page(F5)</h5>}
+
                     {orderWasChanged &&
                         <input type={"button"} value={"PRESS  TO  SAVE  ORDER"} className={"btn btn-danger"}
                                style={{"width": "100%"}} onClick={() => handleSaveOrder()}/>}
@@ -139,7 +134,7 @@ const SortPerformancesInContest = () => {
                                                         <td>{performance.category.name}</td>
                                                         {showMarks && currentContest.juryLastNames &&
                                                             currentContest.juryLastNames.map((juryLastName, id) => (
-                                                                <td key={id} scope={"col"}>
+                                                                <td key={id}>
                                                                     {!isEmpty(performance.marks.filter((mark) => mark.juryLastName === juryLastName)) ? performance.marks.filter((mark) => mark.juryLastName === juryLastName)[0].value : 0}
                                                                 </td>
                                                             ))}

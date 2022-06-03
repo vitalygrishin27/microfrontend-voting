@@ -1,6 +1,5 @@
 import actionTypes from "./category.actionTypes"
 import initialState from "./category.initialStates"
-import criteria from "../../../components/criteria/Criteria";
 
 const categoryReducer = (state = initialState, {type, payload}) => {
     switch (type) {
