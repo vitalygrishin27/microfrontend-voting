@@ -56,6 +56,7 @@ const EditContest = () => {
             }
         }
         data.delete("performances")
+        data.delete("activePerformance")
         data.set("id", currentContest.id)
         data.set("name", name)
         data.set("description", description)
@@ -71,9 +72,9 @@ const EditContest = () => {
             data.set('file', document.getElementById('imgInpEditContest').files[0]);
         }
 
-        /*   for (const pair of data.entries()) {
+           for (const pair of data.entries()) {
                console.log(pair[0] + ', ' + pair[1]);
-           }*/
+           }
         dispatch(updateContestAsync(data));
     };
 
