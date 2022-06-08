@@ -74,25 +74,28 @@ const EditJury = () => {
         if (currentJury.encryptedPassword !== password) {
             data.set('password', password);
         }
+        console.log(isEmpty(selectedContests))
         if (!isEmpty(selectedContests)) {
             let listOfContestsId = [];
             selectedContests.forEach(item => listOfContestsId.push(item.id));
             data.set("contests", listOfContestsId)
+        } else {
+            data.delete('contests');
         }
 
         if (document.getElementById('imgInpEdit').files[0] != null && preview !== '') {
             data.set('file', document.getElementById('imgInpEdit').files[0]);
         }
-        /*
-                 for (const pair of data.entries()) {
-                      console.log(pair[0] + ', ' + pair[1]);
-                  }*/
+
+        for (const pair of data.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
 
         dispatch(updateJuryAsync(data));
     };
 
     const handleChangePhoto = (event) => {
-        if (event.target.files[0]){
+        if (event.target.files[0]) {
             setPreview(URL.createObjectURL(event.target.files[0]));
         }
     }
