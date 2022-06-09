@@ -92,6 +92,40 @@ const performanceReducer = (state = initialState, {type, payload}) => {
                 ...state,
                 isToastShowing: payload,
             };
+        case actionTypes.REQUEST_ACTIVE_PERFORMANCE_ERROR:
+            return {
+                ...state,
+                requestActivePerformanceError: payload,
+            };
+        case actionTypes.ADD_ACTIVE_TIMER:
+            const updatedActiveTimers = state.activeTimers;
+            updatedActiveTimers.push(payload)
+            return {
+                ...state,
+                activeTimers: updatedActiveTimers,
+            };
+        case actionTypes.REMOVE_ACTIVE_TIMER:
+            const updatedActiveTimersAfterRemoving = state.activeTimers;
+            const index = updatedActiveTimersAfterRemoving.indexOf(payload);
+            if (index > -1) {
+                updatedActiveTimersAfterRemoving.splice(index); // 2nd parameter means remove one item only
+            }
+            return {
+                ...state,
+                activeTimers: updatedActiveTimersAfterRemoving,
+            };
+        case actionTypes.CLEAR_ACTIVE_TIMER:
+            state.activeTimers.forEach(id => clearTimeout(id))
+            return {
+                ...state,
+                activeTimers: [],
+            };
+        case actionTypes.UPDATE_ACTIVE_PERFORMANCE_DATA:
+            const updatedPerformances = state.performances.map(performance => performance.id === payload.id ? payload : performance);
+            return {
+                ...state,
+                performances: updatedPerformances
+            };
         default:
             return state;
     }

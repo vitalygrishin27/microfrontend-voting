@@ -6,7 +6,7 @@ export const loadContestsAsync = () => (dispatch) => {
 
     ContestService.getAllContests()
         .then(response => dispatch(actions.contestLoadSuccess(response.data)))
-        .catch(error => dispatch(actions.contestLoadError(error.response.data?error.response.data:error.message)))
+        .catch(error => dispatch(actions.contestLoadError(error.response.data ? error.response.data : error.message)))
 };
 
 export const updateContestAsync = (contest) => (dispatch) => {
@@ -14,7 +14,7 @@ export const updateContestAsync = (contest) => (dispatch) => {
 
     ContestService.updateContest(contest)
         .then(response => dispatch(actions.contestUpdateSuccess(contest)))
-        .catch(error => dispatch(actions.contestUpdateError(error.response.data?error.response.data:error.message)))
+        .catch(error => dispatch(actions.contestUpdateError(error.response.data ? error.response.data : error.message)))
 };
 
 export const deleteContestAsync = (contest) => (dispatch) => {
@@ -22,7 +22,7 @@ export const deleteContestAsync = (contest) => (dispatch) => {
 
     ContestService.deleteContest(contest.id)
         .then(response => dispatch(actions.contestDeleteSuccess(contest)))
-        .catch(error => dispatch(actions.contestDeleteError(error.response.data?error.response.data:error.message)))
+        .catch(error => dispatch(actions.contestDeleteError(error.response.data ? error.response.data : error.message)))
 };
 
 export const createContestAsync = (contest) => (dispatch) => {
@@ -30,7 +30,7 @@ export const createContestAsync = (contest) => (dispatch) => {
 
     ContestService.createContest(contest)
         .then(response => dispatch(actions.contestCreateSuccess(contest)))
-        .catch(error => dispatch(actions.contestCreateError(error.response.data?error.response.data:error.message)))
+        .catch(error => dispatch(actions.contestCreateError(error.response.data ? error.response.data : error.message)))
 };
 
 export const changeSelectedCategories = (changeCategories) => (dispatch) => {

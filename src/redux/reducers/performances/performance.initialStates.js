@@ -5,7 +5,9 @@ const initState = {
     error: null,
     isToastShowing: false,
     orderWasChanged: false,
-    performancesInAssessment: []
+    performancesInAssessment: [],
+    requestActivePerformanceError: null,
+    activeTimers: [],
 };
 
 export default initState

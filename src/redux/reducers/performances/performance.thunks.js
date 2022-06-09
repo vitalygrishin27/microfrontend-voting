@@ -1,6 +1,11 @@
 import actions from "./performance.actions"
 import contestActions from "../contests/contest.actions"
+import {isEmpty} from "lodash";
+import {uid} from "uid";
 import PerformanceService from "../../../services/performance.service";
+
+
+const delay = 5000;
 
 export const loadPerformancesByContestAsync = (contestId) => (dispatch) => {
     PerformanceService.getAllCPerformancesByContest(contestId)
@@ -43,4 +48,33 @@ export const removePerformanceToAssessment = (contest) => (dispatch) => {
 
 export const setToastShowing = (flag) => (dispatch) => {
     dispatch(actions.setToastShowing(flag))
+};
+
+export const requestForActivePerformance = (contestId, performance) => (dispatch) => {
+    dispatch(actions.requestActivePerformance())
+    console.debug("Starting periodical calling server for updated marks. ContestId =" + contestId + ". Current performanceId =" + performance.id + ". Delay is = " + delay);
+    let timerId = setTimeout(function request() {
+        PerformanceService.getUpdatedPerformanceDate(contestId, performance)
+            .then(response => {
+                console.debug(response.data)
+                if (!isEmpty(response.data)) {
+                    dispatch(actions.updateActivePerformanceData(response.data))
+                } else {
+                    dispatch(actions.requestActivePerformanceError(uid()))
+                }
+                dispatch(actions.removeActiveTimer(timerId))
+            })
+            .catch(error => {
+                console.debug(error.response.data)
+                dispatch(actions.requestActivePerformanceError(error))
+                dispatch(actions.removeActiveTimer(timerId))
+                //need to add action to show error message to user because we don`t know how it is going periodical calls
+            })
+    }, delay);
+    console.debug("created timer - " + timerId)
+    dispatch(actions.addActiveTimer(timerId))
+};
+
+export const clearActiveTimers = () => (dispatch) => {
+    dispatch(actions.clearActiveTimers())
 };

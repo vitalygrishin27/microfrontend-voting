@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
-import {loadContestsAsync} from "../../redux/reducers/contests/contest.thunks";
+import {loadContestsAsync,} from "../../redux/reducers/contests/contest.thunks";
 import {
-    loadPerformancesByContestAsync, removePerformanceToAssessment,
+    loadPerformancesByContestAsync, removePerformanceToAssessment, requestForActivePerformance,
     resortPerformances,
     savePerformancesOrder, setToastShowing, submitPerformanceToAssessment
 } from "../../redux/reducers/performances/performance.thunks";
@@ -19,7 +19,8 @@ const SortPerformancesInContest = () => {
         isSaving,
         error,
         isToastShowing,
-        orderWasChanged
+        orderWasChanged,
+        requestActivePerformanceError
     } = useSelector(state => state.performances);
     const {contests} = useSelector(state => state.contests);
     const currentContest = contests ? contests.find(contest => contest.id === parseInt(id)) : null;
@@ -53,6 +54,15 @@ const SortPerformancesInContest = () => {
             }
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
+
+    useEffect(() => {
+        for (let i = 0; i > -1; i--) {
+            clearTimeout(i)
+        }
+        if (currentContest && currentContest.activePerformance)
+            dispatch(requestForActivePerformance(currentContest.id, currentContest.activePerformance));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [performances, requestActivePerformanceError]);
 
     function handleOnDragEnd(result) {
         if (result.destination && result.destination.index === result.source.index) {
