@@ -1,14 +1,17 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {deleteJuryAsync, loadJuriesAsync, setToastShowing} from "../../redux/reducers/jury/jury.thunks";
 import {loadContestsAsync} from "../../redux/reducers/contests/contest.thunks";
+import ConfirmDelete from "../ConfirmDelete";
 
 const Juries = () => {
     const dispatch = useDispatch();
     const {isLoading, juries, error, isDeleting, isToastShowing} = useSelector(state => state.juries);
     const {contests} = useSelector(state => state.contests);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [entityForDelete, setEntityForDelete] = useState(null);
 
     useEffect(() => {
         if (!contests) {
@@ -31,8 +34,19 @@ const Juries = () => {
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
+    const handleDeleteButton = (jury) => {
+        setModalOpen(true);
+        setEntityForDelete(jury)
+    }
+
     return (
         <div className={"container"}>
+            {modalOpen &&
+                <ConfirmDelete modalOpen={modalOpen}
+                               setModalOpen={setModalOpen}
+                               entityForDelete={entityForDelete}
+                               setEntityForDelete={setEntityForDelete}
+                               functionToExecute ={deleteJuryAsync}/>}
             <div className={"row"}>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
                     <Link to={"/juries/add"} className={"btn btn-outline-dark mt-3"}>Create</Link>
@@ -78,7 +92,7 @@ const Juries = () => {
                                 <td>
                                     <Link to={`/juries/edit/${jury.id}`}
                                           className="btn btn-small btn-primary mx-2 mb-1">Edit</Link>
-                                    <button type="button" onClick={() => dispatch(deleteJuryAsync(jury))}
+                                    <button type="button" onClick={() => handleDeleteButton(jury)}
                                             className="btn btn-small btn-danger mb-1">Delete
                                     </button>
                                 </td>

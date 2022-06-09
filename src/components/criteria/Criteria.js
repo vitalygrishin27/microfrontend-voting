@@ -1,12 +1,15 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {deleteCriteriaAsync, loadCriteriaAsync, setToastShowing} from "../../redux/reducers/criteria/criteria.thunks";
+import ConfirmDelete from "../ConfirmDelete";
 
 const Criteria = () => {
     const dispatch = useDispatch();
     const {isLoading, criteria, error, isDeleting, isToastShowing} = useSelector(state => state.criteria);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [entityForDelete, setEntityForDelete] = useState(null);
 
     useEffect(() => {
         if (!criteria) {
@@ -27,8 +30,19 @@ const Criteria = () => {
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
+    const handleDeleteButton = (entity) => {
+        setModalOpen(true);
+        setEntityForDelete(entity)
+    }
+
     return (
         <div className={"container"}>
+            {modalOpen &&
+                <ConfirmDelete modalOpen={modalOpen}
+                               setModalOpen={setModalOpen}
+                               entityForDelete={entityForDelete}
+                               setEntityForDelete={setEntityForDelete}
+                               functionToExecute ={deleteCriteriaAsync}/>}
             <div className={"row"}>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
                     <Link to={"/criteria/add"} className={"btn btn-outline-dark mt-3"}>Create</Link>
@@ -55,7 +69,7 @@ const Criteria = () => {
                                 <td>
                                     <Link to={`/criteria/edit/${criteria.id}`}
                                           className="btn btn-small btn-primary mx-2 mb-1">Edit</Link>
-                                    <button type="button" onClick={() => dispatch(deleteCriteriaAsync(criteria))}
+                                    <button type="button" onClick={() => handleDeleteButton(criteria)}
                                             className="btn btn-small btn-danger mb-1">Delete
                                     </button>
                                 </td>

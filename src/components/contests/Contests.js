@@ -1,15 +1,18 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {deleteContestAsync, loadContestsAsync, setToastShowing} from "../../redux/reducers/contests/contest.thunks";
 import {loadCategoriesAsync} from "../../redux/reducers/categories/category.thunks";
+import ConfirmDelete from "../ConfirmDelete";
 
 
 const Contests = () => {
     const dispatch = useDispatch();
     const {isLoading, contests, error, isDeleting, isToastShowing} = useSelector(state => state.contests);
     const {categories} = useSelector(state => state.categories);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [entityForDelete, setEntityForDelete] = useState(null);
 
     useEffect(() => {
         if (!categories) {
@@ -31,8 +34,19 @@ const Contests = () => {
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
+    const handleDeleteButton = (contest) => {
+        setModalOpen(true);
+        setEntityForDelete(contest)
+    }
+
     return (
         <div className={"container"}>
+            {modalOpen &&
+                <ConfirmDelete modalOpen={modalOpen}
+                               setModalOpen={setModalOpen}
+                               entityForDelete={entityForDelete}
+                               setEntityForDelete={setEntityForDelete}
+                               functionToExecute ={deleteContestAsync}/>}
             <div className={"row"}>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
                     <Link to={"/contests/add"} className={"btn btn-outline-dark mt-3"}>Create</Link>
@@ -72,7 +86,7 @@ const Contests = () => {
                                 <td>
                                     <Link to={`/contests/edit/${contest.id}`}
                                           className="btn btn-small btn-primary mb-1">Edit</Link>
-                                    <button type="button" onClick={() => dispatch(deleteContestAsync(contest))}
+                                    <button type="button" onClick={() => handleDeleteButton(contest)}
                                             className="btn btn-small btn-danger mx-2 mb-1">Delete
                                     </button>
                                     <Link to={`/contests/sort/${contest.id}`}

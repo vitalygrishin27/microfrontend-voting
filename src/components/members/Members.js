@@ -1,14 +1,18 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {deleteMemberAsync, loadMembersAsync, setToastShowing} from "../../redux/reducers/members/member.thunks";
 import {useTranslation} from "react-i18next";
+import ConfirmDelete from "../ConfirmDelete";
 
 const Members = () => {
     const {t} = useTranslation()
     const dispatch = useDispatch();
     const {isLoading, members, error, isDeleting, isToastShowing} = useSelector(state => state.members);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [entityForDelete, setEntityForDelete] = useState(null);
+
     useEffect(() => {
         dispatch(loadMembersAsync());
         dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -26,8 +30,19 @@ const Members = () => {
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDeleting])
 
+    const handleDeleteButton = (entity) => {
+        setModalOpen(true);
+        setEntityForDelete(entity)
+    }
+
     return (
         <div className={"container"}>
+            {modalOpen &&
+                <ConfirmDelete modalOpen={modalOpen}
+                                       setModalOpen={setModalOpen}
+                                       entityForDelete={entityForDelete}
+                                       setEntityForDelete={setEntityForDelete}
+                                       functionToExecute ={deleteMemberAsync}/>}
             <div className={"row"}>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
                     <Link to={"/members/add"} className={"btn btn-outline-dark mt-3"}>{t("Create")}</Link>
@@ -73,7 +88,7 @@ const Members = () => {
                                 <td>
                                     <Link to={`/members/edit/${member.id}`}
                                           className="btn btn-small btn-primary mx-2 mb-1">{t("Edit")}</Link>
-                                    <button type="button" onClick={() => dispatch(deleteMemberAsync(member))}
+                                    <button type="button" onClick={() => handleDeleteButton(member)}
                                             className="btn btn-small btn-danger mb-1">{t("Delete")}
                                     </button>
                                 </td>
