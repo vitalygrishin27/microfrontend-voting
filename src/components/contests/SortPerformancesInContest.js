@@ -135,7 +135,7 @@ const SortPerformancesInContest = () => {
                                                         {showMarks && currentContest.juryLastNames &&
                                                             currentContest.juryLastNames.map((juryLastName, id) => (
                                                                 <td key={id}>
-                                                                    {!isEmpty(performance.marks.filter((mark) => mark.juryLastName === juryLastName)) ? performance.marks.filter((mark) => mark.juryLastName === juryLastName)[0].value : 0}
+                                                                    {!isEmpty(performance.summaryMarks.filter((mark) => mark.juryLastName === juryLastName)) ? performance.summaryMarks.filter((mark) => mark.juryLastName === juryLastName)[0].value : 0}
                                                                 </td>
                                                             ))}
                                                         <td><input type={"button"} value={"Submit"}
