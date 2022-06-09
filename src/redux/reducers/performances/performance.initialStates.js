@@ -5,8 +5,8 @@ const initState = {
     error: null,
     isToastShowing: false,
     orderWasChanged: false,
-    performancesInAssessment: [],
     requestActivePerformanceError: null,
+    activePerformance: null,
     activeTimers: [],
 };
 

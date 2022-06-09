@@ -4,9 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {toast} from "react-toastify";
 import {loadContestsAsync,} from "../../redux/reducers/contests/contest.thunks";
 import {
+    clearActiveTimers,
     loadPerformancesByContestAsync, removePerformanceToAssessment, requestForActivePerformance,
     resortPerformances,
-    savePerformancesOrder, setToastShowing, submitPerformanceToAssessment
+    savePerformancesOrder, setToastShowing, submitPerformanceToAssessment, updateActivePerformance
 } from "../../redux/reducers/performances/performance.thunks";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import {isEmpty} from "lodash";
@@ -20,7 +21,7 @@ const SortPerformancesInContest = () => {
         error,
         isToastShowing,
         orderWasChanged,
-        requestActivePerformanceError
+        requestActivePerformanceError, activePerformance
     } = useSelector(state => state.performances);
     const {contests} = useSelector(state => state.contests);
     const currentContest = contests ? contests.find(contest => contest.id === parseInt(id)) : null;
@@ -29,6 +30,7 @@ const SortPerformancesInContest = () => {
     const [showMarks, setShowMarks] = useState(false);
 
     useEffect(() => {
+        dispatch(clearActiveTimers());
         if (!currentContest) {
             navigate("/contests");
             return;
@@ -37,9 +39,8 @@ const SortPerformancesInContest = () => {
             dispatch(loadContestsAsync())
         }
         if (!orderWasChanged) {
-            dispatch(loadPerformancesByContestAsync(currentContest.id));
+            dispatch(loadPerformancesByContestAsync(currentContest));
         }
-
         dispatch(setToastShowing(false));// eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -59,10 +60,10 @@ const SortPerformancesInContest = () => {
         for (let i = 0; i > -1; i--) {
             clearTimeout(i)
         }
-        if (currentContest && currentContest.activePerformance)
-            dispatch(requestForActivePerformance(currentContest.id, currentContest.activePerformance));
+        if (activePerformance)
+            dispatch(requestForActivePerformance(currentContest.id, activePerformance));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [performances, requestActivePerformanceError]);
+    }, [activePerformance, requestActivePerformanceError]);
 
     function handleOnDragEnd(result) {
         if (result.destination && result.destination.index === result.source.index) {
@@ -86,6 +87,26 @@ const SortPerformancesInContest = () => {
         dispatch(removePerformanceToAssessment(contest));
     }
 
+    const getMark = (juryLastName, performance) => {
+        const filteredMark = performance.summaryMarks.filter(mark => mark.juryLastName === juryLastName);
+        if (isEmpty(filteredMark)) return 0
+        if (filteredMark.length > 1) return -1
+        return filteredMark[0].value
+    }
+
+    const getRowColor = (performance) => {
+        let result = ""
+        if (activePerformance && activePerformance.id === performance.id) result = "bg-info"
+        let isFullMarked = true;
+        performance.summaryMarks.forEach(mark => {
+            if (mark.value === 0) {
+                isFullMarked = false
+            }
+        })
+        if (isFullMarked) return "bg-success text-white";
+        return result;
+    }
+
     return (
         <div className={"container"}>
             <div className={"row"}>
@@ -104,7 +125,9 @@ const SortPerformancesInContest = () => {
                     <h1 id="rt" className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>MANAGE
                         PERFORMANCES</h1>
                     {isLoading && <h3 style={{"color": "red"}}>Loading...</h3>}
-                    {orderWasChanged && <h5 id="saveOrder" style={{"color": "red"}}>You should save previous order first and then reload data. To discard changes reload page(F5)</h5>}
+                    {orderWasChanged &&
+                        <h5 id="saveOrder" style={{"color": "red"}}>You should save previous order first and then reload
+                            data. To discard changes reload page(F5)</h5>}
 
                     {orderWasChanged &&
                         <input type={"button"} value={"PRESS  TO  SAVE  ORDER"} className={"btn btn-danger"}
@@ -118,9 +141,9 @@ const SortPerformancesInContest = () => {
                             <th scope={"col"}>Place</th>
                             <th scope={"col"}>Performance name</th>
                             <th scope={"col"}>Category</th>
-                            {showMarks && currentContest && currentContest.juryLastNames &&
-                                currentContest.juryLastNames.map((juryLastName, id) => (
-                                    <th key={id} scope={"col"}>{juryLastName}</th>
+                            {showMarks && currentContest &&
+                                currentContest.juryLastNames.map((lastName, id) => (
+                                    <th key={id} scope={"col"}>{lastName}</th>
                                 ))}
                             <th scope={"col"}>Submit for assessment</th>
                         </tr>
@@ -134,22 +157,21 @@ const SortPerformancesInContest = () => {
                                             <Draggable key={performance.id} draggableId={performance.id.toString()}
                                                        index={index}>
                                                 {(provided) => (
-                                                    <tr className={currentContest.activePerformance &&
-                                                    currentContest.activePerformance.id === performance.id ? "bg-warning" : ""}
+                                                    <tr className={getRowColor(performance)}
                                                         ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                                         <td>{index + 1}</td>
                                                         <td>{performance.fullName}</td>
                                                         <td>{performance.place}</td>
                                                         <td>{performance.name}</td>
                                                         <td>{performance.category.name}</td>
-                                                        {showMarks && currentContest.juryLastNames &&
-                                                            currentContest.juryLastNames.map((juryLastName, id) => (
+                                                        {showMarks && currentContest &&
+                                                            currentContest.juryLastNames.map((lastName, id) => (
                                                                 <td key={id}>
-                                                                    {!isEmpty(performance.summaryMarks.filter((mark) => mark.juryLastName === juryLastName)) ? performance.summaryMarks.filter((mark) => mark.juryLastName === juryLastName)[0].value : 0}
+                                                                    {getMark(lastName, performance)}
                                                                 </td>
                                                             ))}
                                                         <td><input type={"button"} value={"Submit"}
-                                                                   className={"btn btn-success"}
+                                                                   className={activePerformance && activePerformance.id === performance.id?"btn btn-danger":"btn btn-success"}
                                                                    style={{"width": "100%"}}
                                                                    onClick={() => handleSubmit(currentContest, performance)}/>
                                                         </td>

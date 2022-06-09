@@ -5,7 +5,9 @@ export const loadContestsAsync = () => (dispatch) => {
     dispatch(actions.contestLoadStart())
 
     ContestService.getAllContests()
-        .then(response => dispatch(actions.contestLoadSuccess(response.data)))
+        .then(response => {
+            dispatch(actions.contestLoadSuccess(response.data))
+        })
         .catch(error => dispatch(actions.contestLoadError(error.response.data ? error.response.data : error.message)))
 };
 

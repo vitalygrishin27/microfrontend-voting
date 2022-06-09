@@ -1,5 +1,6 @@
 import actionTypes from "./performance.actionTypes"
 import initialState from "./performance.initialStates"
+import {isNull} from "lodash";
 
 const performanceReducer = (state = initialState, {type, payload}) => {
     switch (type) {
@@ -69,11 +70,6 @@ const performanceReducer = (state = initialState, {type, payload}) => {
                 error: null,
             };
         case actionTypes.PERFORMANCES_SUBMIT_TO_ASSESSMENT_SUCCESS:
-     /*       console.log("!!!!!!!!!!!!!!");
-            console.log(payload);
-            console.log(state.contests);
-            const updatedContest= state.contests.map(contest => contest.id === payload.id ? payload : contest);
-            console.log(updatedContest);*/
             return {
                 ...state,
                 isSaving: false,
@@ -121,10 +117,13 @@ const performanceReducer = (state = initialState, {type, payload}) => {
                 activeTimers: [],
             };
         case actionTypes.UPDATE_ACTIVE_PERFORMANCE_DATA:
-            const updatedPerformances = state.performances.map(performance => performance.id === payload.id ? payload : performance);
+            let updatedPerformances = state.performances;
+            if (!isNull(payload))
+                updatedPerformances = state.performances.map(performance => performance.id === payload.id ? payload : performance);
             return {
                 ...state,
-                performances: updatedPerformances
+                performances: updatedPerformances,
+                activePerformance: payload
             };
         default:
             return state;

@@ -7,9 +7,12 @@ import PerformanceService from "../../../services/performance.service";
 
 const delay = 5000;
 
-export const loadPerformancesByContestAsync = (contestId) => (dispatch) => {
-    PerformanceService.getAllCPerformancesByContest(contestId)
-        .then(response => dispatch(actions.performancesLoadSuccess(response.data)))
+export const loadPerformancesByContestAsync = (contest) => (dispatch) => {
+    PerformanceService.getAllCPerformancesByContest(contest.id)
+        .then(response => {
+            dispatch(actions.performancesLoadSuccess(response.data))
+            dispatch(updateActivePerformance(contest.activePerformance))
+        })
         .catch(error => dispatch(actions.performancesLoadError(error.response.data ? error.response.data : error.message)))
 };
 
@@ -31,6 +34,7 @@ export const submitPerformanceToAssessment = (contest, performance) => (dispatch
         .then(response => {
             dispatch(actions.submitPerformanceToAssessmentSuccess(response.data))
             dispatch(contestActions.submitPerformanceToAssessmentSuccess(response.data))
+            dispatch(updateActivePerformance(response.data.activePerformance))
         })
         .catch(error => dispatch(actions.submitPerformanceToAssessmentError(error.response.data ? error.response.data : error.message)))
 };
@@ -42,6 +46,7 @@ export const removePerformanceToAssessment = (contest) => (dispatch) => {
         .then(response => {
             dispatch(actions.submitPerformanceToAssessmentSuccess(response.data))
             dispatch(contestActions.submitPerformanceToAssessmentSuccess(response.data))
+            dispatch(updateActivePerformance(null))
         })
         .catch(error => dispatch(actions.submitPerformanceToAssessmentError(error.response.data ? error.response.data : error.message)))
 };
@@ -77,4 +82,8 @@ export const requestForActivePerformance = (contestId, performance) => (dispatch
 
 export const clearActiveTimers = () => (dispatch) => {
     dispatch(actions.clearActiveTimers())
+};
+
+export const updateActivePerformance = (performance) => (dispatch) => {
+    dispatch(actions.updateActivePerformanceData(performance))
 };
