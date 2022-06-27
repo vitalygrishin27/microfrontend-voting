@@ -8,8 +8,10 @@ import {
     updateContestAsync, updateSelectedCategoriesList
 } from "../../redux/reducers/contests/contest.thunks";
 import {isEmpty} from "lodash";
+import {useTranslation} from "react-i18next";
 
 const EditContest = () => {
+    const {t} = useTranslation();
     const {id} = useParams();
     const {contests, isSaving, error, selectedCategories, isToastShowing} = useSelector(state => state.contests);
     const currentContest = contests ? contests.find(contest => contest.id === parseInt(id)) : null;
@@ -72,9 +74,9 @@ const EditContest = () => {
             data.set('file', document.getElementById('imgInpEditContest').files[0]);
         }
 
-           for (const pair of data.entries()) {
-               console.log(pair[0] + ', ' + pair[1]);
-           }
+        for (const pair of data.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
         dispatch(updateContestAsync(data));
     };
 
@@ -94,17 +96,16 @@ const EditContest = () => {
 
             {currentContest ? (
                 <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>Edit info
-                        of {currentContest.name}</h3>
+                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
                     <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>Saving...</h3>}
+                        {isSaving && <h3>{t("Saving...")}</h3>}
                         <form onSubmit={handleSubmit}>
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Name")} className={"form-control"}
                                        value={name} onChange={e => setName(e.target.value)}/>
                             </div>
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Description"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Description")} className={"form-control"}
                                        value={description} onChange={e => setDescription(e.target.value)}/>
                             </div>
                             {categories && categories.map((category, id) => (
@@ -124,15 +125,15 @@ const EditContest = () => {
                                      height={"142"}/>
                             </div>
                             <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                   value={"Delete image"} className={"btn btn-dark mb-2"}
+                                   value={t("Delete image")} className={"btn btn-dark mb-2"}
                                    onClick={() => handleDeletePhoto()}
                             />
 
                             <div className={"form-group"}>
-                                <input type={"submit"} value={"Update"} className={"btn btn-dark"}
+                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}
                                 />
                                 <Link to={"/contests"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>Cancel</Link>
+                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
                             </div>
                         </form>
                     </div>

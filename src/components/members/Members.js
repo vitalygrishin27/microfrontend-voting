@@ -45,7 +45,7 @@ const Members = () => {
                                        functionToExecute ={deleteMemberAsync}/>}
             <div className={"row"}>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    <Link to={"/members/add"} className={"btn btn-outline-dark mt-3"}>{t("Create")}</Link>
+                    <Link to={"/members/add"} className={"btn btn-outline-dark mt-3"}>{t("Add")}</Link>
                 </div>
                 <div className={"col-md-10 mx-auto mt-3"}>
                     <h1 className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("MEMBER MANAGER")}</h1>

@@ -7,12 +7,14 @@ import {
     clearActiveTimers,
     loadPerformancesByContestAsync, removePerformanceToAssessment, requestForActivePerformance,
     resortPerformances,
-    savePerformancesOrder, setToastShowing, submitPerformanceToAssessment, updateActivePerformance
+    savePerformancesOrder, setToastShowing, submitPerformanceToAssessment
 } from "../../redux/reducers/performances/performance.thunks";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import {isEmpty} from "lodash";
+import {useTranslation} from "react-i18next";
 
 const SortPerformancesInContest = () => {
+    const {t} = useTranslation();
     const {id} = useParams();
     const {
         performances,
@@ -111,41 +113,39 @@ const SortPerformancesInContest = () => {
         <div className={"container"}>
             <div className={"row"}>
                 <div className={"col-md-12 mb-2"} style={{"textAlign": "right"}}>
-                    <input type={"button"} value={"Remove assessment"}
+                    <input type={"button"} value={t("Remove assessment")}
                            className={"btn btn-outline-danger mt-3"}
                            onClick={() => handleRemoveAssessment(currentContest)}/>
                 </div>
                 <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    Show marks <input type={"checkbox"} className={"mr-1 form-check-input"}
+                    {t("Show marks")} <input type={"checkbox"} className={"mr-1 form-check-input"}
                                       checked={showMarks}
                                       onChange={() => showMarks ? setShowMarks(false) : setShowMarks(true)}/>
                 </div>
 
                 <div className={"col-md-10 mx-auto mt-3"}>
-                    <h1 id="rt" className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>MANAGE
-                        PERFORMANCES</h1>
-                    {isLoading && <h3 style={{"color": "red"}}>Loading...</h3>}
+                    <h1 id="rt" className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("PERFORMANCES MANAGER")}</h1>
+                    {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
                     {orderWasChanged &&
-                        <h5 id="saveOrder" style={{"color": "red"}}>You should save previous order first and then reload
-                            data. To discard changes reload page(F5)</h5>}
+                        <h5 id="saveOrder" style={{"color": "red"}}>{t("You should save previous order first and then reload data. To discard changes reload page (F5)")}</h5>}
 
                     {orderWasChanged &&
-                        <input type={"button"} value={"PRESS  TO  SAVE  ORDER"} className={"btn btn-danger"}
+                        <input type={"button"} value={t("PRESS  TO  SAVE  ORDER")} className={"btn btn-danger"}
                                style={{"width": "100%"}} onClick={() => handleSaveOrder()}/>}
                     {error && <h3 style={{"color": "red"}}>{error}</h3>}
                     <table className={"table table-hover"}>
                         <thead className={"text-white bg-dark text-center"}>
                         <tr>
                             <th scope={"col"}>#</th>
-                            <th scope={"col"}>Member name</th>
-                            <th scope={"col"}>Place</th>
-                            <th scope={"col"}>Performance name</th>
-                            <th scope={"col"}>Category</th>
+                            <th scope={"col"}>{t("Member")}</th>
+                            <th scope={"col"}>{t("Place")}</th>
+                            <th scope={"col"}>{t("Performance")}</th>
+                            <th scope={"col"}>{t("Category")}</th>
                             {showMarks && currentContest &&
                                 currentContest.juryLastNames.map((lastName, id) => (
                                     <th key={id} scope={"col"}>{lastName}</th>
                                 ))}
-                            <th scope={"col"}>Submit for assessment</th>
+                            <th scope={"col"}>{t("Submit for assessment")}</th>
                         </tr>
                         </thead>
                         <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -170,7 +170,7 @@ const SortPerformancesInContest = () => {
                                                                     {getMark(lastName, performance)}
                                                                 </td>
                                                             ))}
-                                                        <td><input type={"button"} value={"Submit"}
+                                                        <td><input type={"button"} value={t("Submit")}
                                                                    className={activePerformance && activePerformance.id === performance.id?"btn btn-danger":"btn btn-success"}
                                                                    style={{"width": "100%"}}
                                                                    onClick={() => handleSubmit(currentContest, performance)}/>

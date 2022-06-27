@@ -3,16 +3,18 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import {
-    changeSelectedPerformances,
     createMemberAsync,
-    setToastShowing
+    setToastShowing, unselectPerformance, updateSelectedPerformancesList
 } from "../../redux/reducers/members/member.thunks";
 import {loadContestsAsync} from "../../redux/reducers/contests/contest.thunks";
 import AddPerformance from "./AddPerformance";
 import {isEmpty} from "lodash";
 import EditPerformance from "./EditPerformance";
+import {useTranslation} from "react-i18next";
+import ConfirmDelete from "../ConfirmDelete";
 
 const AddMember = () => {
+    const {t} = useTranslation();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [secondName, setSecondName] = useState("");
@@ -22,10 +24,12 @@ const AddMember = () => {
     const [performanceToEdit, setPerformanceToEdit] = useState("");
     const {isSaving, error, selectedPerformances, isToastShowing} = useSelector(state => state.members);
     const {contests} = useSelector(state => state.contests);
+    const [entityForDelete, setEntityForDelete] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalForDeleteOpen, setModalForDeleteOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
 
     const handleSubmit = (e) => {
@@ -52,6 +56,7 @@ const AddMember = () => {
     };
 
     useEffect(() => {
+        dispatch(updateSelectedPerformancesList([]));
         if (!contests) {
             dispatch(loadContestsAsync())
         }// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,12 +75,9 @@ const AddMember = () => {
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
 
-    const handleDeletePerformance = (performance) => {
-        const changePerformances = {
-            performance: performance,
-            needToAdd: false,
-        }
-        dispatch(changeSelectedPerformances(changePerformances));
+    const handleDeletePerformance = (entity) => {
+        setModalForDeleteOpen(true);
+        setEntityForDelete(entity);
     };
 
     const handleEditPerformance = (performance) => {
@@ -93,35 +95,41 @@ const AddMember = () => {
             {modalOpen && <AddPerformance setOpenModal={setModalOpen}/>}
             {editModalOpen &&
                 <EditPerformance performanceToEdit={performanceToEdit} setEditOpenModal={setEditModalOpen}/>}
+            {modalForDeleteOpen &&
+                <ConfirmDelete modalOpen={modalForDeleteOpen}
+                               setModalOpen={setModalForDeleteOpen}
+                               entityForDelete={entityForDelete}
+                               setEntityForDelete={setEntityForDelete}
+                               functionToExecute ={unselectPerformance}/>}
             <div className={"container"}>
                 <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>Create new member</h3>
+                    <h3 className={"display-7 text-center"}>{t("Add")} {t("new")} {t("member")}</h3>
                     <div className={"col-md-6 shadow mx-auto p-5"}>
                         <form onSubmit={handleSubmit}>
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Last name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Last name")} className={"form-control"}
                                        value={lastName} onChange={e => setLastName(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Name")} className={"form-control"}
                                        value={firstName} onChange={e => setFirstName(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Second name"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Second name")} className={"form-control"}
                                        value={secondName} onChange={e => setSecondName(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Institution/Place"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Institution/Place")} className={"form-control"}
                                        value={description} onChange={e => setDescription(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
                                 <select required id="combo" className={"form-control"}
                                         value={selectedContest} onChange={e => setSelectedContest(e.target.value)}>
-                                    <option value={''}> -- Select Contest --</option>
+                                    <option value={''}> -- {t("select")} {t("contest")} --</option>
                                     {contests && contests.map((contest, id) => (
 
                                         <option key={id} value={contest.id} className={"mr-1"}> {contest.name}</option>
@@ -139,12 +147,12 @@ const AddMember = () => {
                                      width={"100"}
                                      height={"142"}/>
                                 <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                       value={"Delete image"} className={"btn btn-dark mb-2"}
+                                       value={t("Delete image")} className={"btn btn-dark mb-2"}
                                        onClick={() => handleDeletePhoto()}/>
                             </div>
                             <div>
                                 <button type="button" onClick={() => setModalOpen(true)}
-                                        className="btn btn-small btn-warning mb-1">Add Performance
+                                        className="btn btn-small btn-warning mb-1">{t("Add")} {t("performance")}
                                 </button>
                             </div>
 
@@ -152,8 +160,8 @@ const AddMember = () => {
                                 <table className={"table table-hover"}>
                                     <thead className={" text-center"}>
                                     <tr>
-                                        <th scope={"col"}>Name</th>
-                                        <th scope={"col"} style={{"textAlign": "right"}}>Actions</th>
+                                        <th scope={"col"}>{t("Title")}</th>
+                                        <th scope={"col"} style={{"textAlign": "right"}}>{t("Actions")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -163,11 +171,11 @@ const AddMember = () => {
                                             <td style={{"textAlign": "right"}}>
                                                 <button type="button"
                                                         onClick={() => handleEditPerformance(performance)}
-                                                        className="btn btn-sm btn-primary mx-2 mb-1">Edit
+                                                        className="btn btn-sm btn-primary mx-2 mb-1">{t("Edit")}
                                                 </button>
                                                 <button type="button"
                                                         onClick={() => handleDeletePerformance(performance)}
-                                                        className="btn btn-sm btn-danger mb-1">Delete
+                                                        className="btn btn-sm btn-danger mb-1">{t("Delete")}
                                                 </button>
                                             </td>
                                         </tr>
@@ -176,7 +184,7 @@ const AddMember = () => {
                                 </table>) : ''}
 
                             <div className={"form-group"}>
-                                <input type={"submit"} value={"Add member"} className={"btn btn-success"}
+                                <input type={"submit"} value={t("Create")} className={"btn btn-success"}
                                        style={{"width": "100%"}}/>
                             </div>
                         </form>

@@ -9,8 +9,10 @@ import {
     updateSelectedContestsList
 } from "../../redux/reducers/jury/jury.thunks";
 import {isEmpty} from "lodash";
+import {useTranslation} from "react-i18next";
 
 const EditJury = () => {
+    const {t} = useTranslation();
     const {id} = useParams();
     const {juries, isSaving, error, selectedContests, isToastShowing} = useSelector(state => state.juries);
     const {contests} = useSelector(state => state.contests);
@@ -22,7 +24,8 @@ const EditJury = () => {
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [preview, setPreview] = useState("");
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const handleChangeContestsToJury = (checked, contest) => {
         dispatch(changeSelectedContests({checked, contest}))
     }
@@ -52,9 +55,6 @@ const EditJury = () => {
             }
         }// eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSaving])
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -87,9 +87,9 @@ const EditJury = () => {
             data.set('file', document.getElementById('imgInpEdit').files[0]);
         }
 
-        for (const pair of data.entries()) {
+     /*   for (const pair of data.entries()) {
             console.log(pair[0] + ', ' + pair[1]);
-        }
+        }*/
 
         dispatch(updateJuryAsync(data));
     };
@@ -110,35 +110,34 @@ const EditJury = () => {
 
             {currentJury ? (
                 <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>Edit info
-                        of {currentJury.lastName + " " + currentJury.firstName}</h3>
+                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
                     <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>Saving...</h3>}
+                        {isSaving && <h3>{t("Saving...")}</h3>}
                         <form onSubmit={handleSubmit}>
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Last name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Last name")} className={"form-control"}
                                        value={lastName} onChange={e => setLastName(e.target.value)}/>
                             </div>
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Name")} className={"form-control"}
                                        value={firstname} onChange={e => setFirstName(e.target.value)}/>
                             </div>
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Second name"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Second name")} className={"form-control"}
                                        value={secondName} onChange={e => setSecondName(e.target.value)}/>
                             </div>
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Position"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Position")} className={"form-control"}
                                        value={position} onChange={e => setPosition(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Login"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Login")} className={"form-control"}
                                        value={login} onChange={e => setLogin(e.target.value)}/>
                             </div>
 
                             <div className={"form-group mb-2"}>
-                                <input required type={"password"} placeholder={"Password"} className={"form-control"}
+                                <input required type={"password"} placeholder={t("Password")} className={"form-control"}
                                        value={password} onChange={e => setPassword(e.target.value)}/>
                             </div>
 
@@ -159,14 +158,14 @@ const EditJury = () => {
                                      height={"142"}/>
                             </div>
                             <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                   value={"Delete image"} className={"btn btn-dark mb-2"}
+                                   value={t("Delete image")} className={"btn btn-dark mb-2"}
                                    onClick={() => handleDeletePhoto()}
                             />
                             <div className={"form-group"}>
-                                <input type={"submit"} value={"Update"} className={"btn btn-success"}
+                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}
                                 />
                                 <Link to={"/juries"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>Cancel</Link>
+                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
                             </div>
                         </form>
                     </div>

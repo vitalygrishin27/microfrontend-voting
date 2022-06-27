@@ -3,8 +3,10 @@ import "./Modal.css";
 import {useDispatch, useSelector} from "react-redux";
 import {loadCategoriesAsync} from "../../redux/reducers/categories/category.thunks";
 import {updateSelectedPerformance} from "../../redux/reducers/members/member.thunks";
+import {useTranslation} from "react-i18next";
 
 function EditPerformance({performanceToEdit, setEditOpenModal}) {
+    const {t} = useTranslation();
     const [name, setName] = useState("");
     const [selectedCategory, setSelectedCategory] = useState({});
     const {categories} = useSelector(state => state.categories);
@@ -46,12 +48,12 @@ function EditPerformance({performanceToEdit, setEditOpenModal}) {
             <div className="modalContainer">
                 <form onSubmit={handleSubmit}>
                     <div>
-                        <h3 className={"display-7 text-center"}>Edit Performance</h3>
+                        <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
 
                         <div className={"form-group mb-2"}>
                             <select required id="combo" className={"form-control"}
                                     value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-                                <option value={''}> -- Select Category --</option>
+                                <option value={''}> -- {t("select category")} --</option>
                                 {categories && categories.map((category, id) => (
 
                                     <option key={id} value={category.id} className={"mr-1"}> {category.name}</option>
@@ -61,7 +63,7 @@ function EditPerformance({performanceToEdit, setEditOpenModal}) {
                         </div>
 
                         <div className={"form-group mb-2 mt-3 mb-3"}>
-                            <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
                                    value={name} onChange={e => setName(e.target.value)}/>
                         </div>
 
@@ -70,9 +72,9 @@ function EditPerformance({performanceToEdit, setEditOpenModal}) {
                         <button type="button" onClick={() => {
                             setEditOpenModal(false)
                         }}
-                                className="btn btn-small btn-danger mb-1">Cancel
+                                className="btn btn-small btn-danger mb-1">{t("Cancel")}
                         </button>
-                        <input type={"submit"} value={"Save changes"}
+                        <input type={"submit"} value={t("Update")}
                                className={"btn btn-small btn-primary mx-2 mb-1"}/>
 
                     </div>

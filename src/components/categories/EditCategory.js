@@ -8,8 +8,10 @@ import {
     updateCategoryAsync, updateSelectedCriteriaList
 } from "../../redux/reducers/categories/category.thunks";
 import {isEmpty} from "lodash";
+import {useTranslation} from "react-i18next";
 
 const EditCategory = () => {
+    const {t} = useTranslation();
     const {id} = useParams();
     const {
         categories,
@@ -70,21 +72,20 @@ const EditCategory = () => {
 
             {currentCategory ? (
                 <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>Edit info
-                        of {currentCategory.name}</h3>
+                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
                     <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>Saving...</h3>}
+                        {isSaving && <h3>{t("Saving...")}</h3>}
                         <form onSubmit={handleSubmit}>
                             <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={"Last name"} className={"form-control"}
+                                <input required type={"text"} placeholder={t("Title")} className={"form-control"}
                                        value={name} onChange={e => setName(e.target.value)}/>
                             </div>
                             <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={"Description"} className={"form-control"}
+                                <input type={"text"} placeholder={t("Description")} className={"form-control"}
                                        value={description} onChange={e => setDescription(e.target.value)}/>
                             </div>
                             <div style={{"display": !isEmpty(criteria) ? "inline-block" : "none"}}>
-                                Included criteria
+                                {t("Criteria")}
                             </div>
                             {criteria && criteria.map((criteria, id) => (
                                 <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
@@ -95,9 +96,9 @@ const EditCategory = () => {
                             ))}
 
                             <div className={"form-group"}>
-                                <input type={"submit"} value={"Update"} className={"btn btn-dark"}/>
+                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}/>
                                 <Link to={"/categories"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>Cancel</Link>
+                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
                             </div>
                         </form>
                     </div>

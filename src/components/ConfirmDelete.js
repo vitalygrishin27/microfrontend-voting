@@ -14,20 +14,20 @@ const ConfirmDeleteCategory = ({modalOpen, setModalOpen, entityForDelete, setEnt
         setEntityForDelete(null);
         setModalOpen(false);
     }
-    const {t} = useTranslation()
+    const {t} = useTranslation();
 
     return (
         <div>
             <Modal show={modalOpen}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Are you sure</Modal.Title>
+                    <Modal.Title>{t("Are you sure?")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        NO
+                        {t("NO")}
                     </Button>
                     <Button variant="primary" onClick={handleConfirm}>
-                        YES
+                        {t("YES")}
                     </Button>
                 </Modal.Footer>
             </Modal>

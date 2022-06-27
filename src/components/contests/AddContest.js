@@ -10,8 +10,10 @@ import {
 } from "../../redux/reducers/contests/contest.thunks";
 import {isEmpty} from "lodash";
 import {loadCategoriesAsync} from "../../redux/reducers/categories/category.thunks";
+import {useTranslation} from "react-i18next";
 
 const AddContest = () => {
+    const {t} = useTranslation();
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const {categories} = useSelector(state => state.categories);
@@ -76,20 +78,20 @@ const AddContest = () => {
     return (
         <div className={"container"}>
             <div className={"row"}>
-                <h3 className={"display-7 text-center"}>Create new contest</h3>
+                <h3 className={"display-7 text-center"}>{t("Create")} {t("contest")}</h3>
                 <div className={"col-md-6 shadow mx-auto p-5"}>
                     <form onSubmit={handleSubmit}>
                         <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
                                    value={name} onChange={e => setName(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input type={"text"} placeholder={"Description"} className={"form-control"}
+                            <input type={"text"} placeholder={t("Description")} className={"form-control"}
                                    value={description} onChange={e => setDescription(e.target.value)}/>
                         </div>
                         <div style={{"display": !isEmpty(categories) ? "inline-block" : "none"}}>
-                            Included categories
+                            {t("Categories")}
                         </div>
                         {categories && categories.map((category, id) => (
                             <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
@@ -108,12 +110,12 @@ const AddContest = () => {
                                  width={"100"}
                                  height={"142"}/>
                             <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                   value={"Delete image"} className={"btn btn-dark mb-2"}
+                                   value={t("Delete image")} className={"btn btn-dark mb-2"}
                                    onClick={() => handleDeletePhoto()}/>
                         </div>
 
                         <div className={"form-group"}>
-                            <input type={"submit"} value={"Create"} className={"btn btn-dark"}
+                            <input type={"submit"} value={t("Create")} className={"btn btn-success"}
                                    style={{"width": "100%"}}/>
                         </div>
                     </form>

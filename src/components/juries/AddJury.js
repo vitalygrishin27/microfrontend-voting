@@ -13,8 +13,10 @@ import {isEmpty} from "lodash";
 import {
     loadContestsAsync
 } from "../../redux/reducers/contests/contest.thunks";
+import {useTranslation} from "react-i18next";
 
 const AddJury = () => {
+    const {t} = useTranslation();
     const [firstname, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [secondName, setSecondName] = useState("");
@@ -81,41 +83,41 @@ const AddJury = () => {
     return (
         <div className={"container"}>
             <div className={"row"}>
-                <h3 className={"display-7 text-center"}>Create new jury</h3>
+                <h3 className={"display-7 text-center"}>{t("Add")} {t("jury")}</h3>
                 <div className={"col-md-6 shadow mx-auto p-5"}>
                     <form onSubmit={handleSubmit}>
                         <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={"Lastname"} className={"form-control"}
+                            <input required type={"text"} placeholder={t("Last name")} className={"form-control"}
                                    value={lastName} onChange={e => setLastName(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={"Name"} className={"form-control"}
+                            <input required type={"text"} placeholder={t("Name")} className={"form-control"}
                                    value={firstname} onChange={e => setFirstName(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input type={"text"} placeholder={"Second name"} className={"form-control"}
+                            <input type={"text"} placeholder={t("Second name")} className={"form-control"}
                                    value={secondName} onChange={e => setSecondName(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input type={"text"} placeholder={"Position"} className={"form-control"}
+                            <input type={"text"} placeholder={t("Position")} className={"form-control"}
                                    value={position} onChange={e => setPosition(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={"Login"} className={"form-control"}
+                            <input required type={"text"} placeholder={t("Login")} className={"form-control"}
                                    value={login} onChange={e => setLogin(e.target.value)}/>
                         </div>
 
                         <div className={"form-group mb-2"}>
-                            <input required type={"password"} placeholder={"Password"} className={"form-control"}
+                            <input required type={"password"} placeholder={t("Password")} className={"form-control"}
                                    value={password} onChange={e => setPassword(e.target.value)}/>
                         </div>
 
                         <div style={{"display": !isEmpty(contests) ? "inline-block" : "none"}}>
-                            Contests
+                            {t("Contests")}
                         </div>
                         {contests && contests.map((contest, id) => (
                             <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
@@ -135,7 +137,7 @@ const AddJury = () => {
                         </div>
 
                         <div className={"form-group"}>
-                            <input type={"submit"} value={"Create"} className={"btn btn-dark"}
+                            <input type={"submit"} value={t("Create")} className={"btn btn-success"}
                                    style={{"width": "100%"}}/>
                         </div>
                     </form>
