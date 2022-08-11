@@ -142,7 +142,7 @@ const SortPerformancesInContest = () => {
                             <th scope={"col"}>{t("Performance")}</th>
                             <th scope={"col"}>{t("Category")}</th>
                             {showMarks && currentContest &&
-                                currentContest.juryLastNames.map((lastName, id) => (
+                                currentContest.juryLastNames.sort().map((lastName, id) => (
                                     <th key={id} scope={"col"}>{lastName}</th>
                                 ))}
                             <th scope={"col"}>{t("Submit for assessment")}</th>
@@ -165,7 +165,7 @@ const SortPerformancesInContest = () => {
                                                         <td>{performance.name}</td>
                                                         <td>{performance.category.name}</td>
                                                         {showMarks && currentContest &&
-                                                            currentContest.juryLastNames.map((lastName, id) => (
+                                                            currentContest.juryLastNames.sort().map((lastName, id) => (
                                                                 <td key={id}>
                                                                     {getMark(lastName, performance)}
                                                                 </td>
