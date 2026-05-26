@@ -1,22 +1,29 @@
 .modalBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(200, 200, 200);
-    position: fixed;
+
     display: flex;
     justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    z-index: 9999; /* 🔥 ключевой фикс */
 }
 
 .modalContainer {
-    width: 500px;
-    height: 250px;
+    width: 420px;
+    background: #fff;
     border-radius: 12px;
-    background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 24px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
     display: flex;
     flex-direction: column;
-    padding: 25px;
-    margin-top: 200px;
 }
 
 .modalContainer .title {

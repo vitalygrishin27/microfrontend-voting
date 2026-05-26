@@ -38,28 +38,67 @@ const AddCriteria = () => {
     }, [isSaving])
 
     return (
-        <div className={"container"}>
-            <div className={"row"}>
-                <h3 className={"display-7 text-center"}>{t("Create criteria")}</h3>
-                <div className={"col-md-6 shadow mx-auto p-5"}>
-                    <form onSubmit={handleSubmit}>
-                        <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                   value={name} onChange={e => setName(e.target.value)}/>
-                        </div>
-                        <div className={"form-group mb-2"}>
-                            <input type={"text"} placeholder={t("Description")} className={"form-control"}
-                                   value={description} onChange={e => setDescription(e.target.value)}/>
-                        </div>
-                        <div className={"form-group"}>
-                            <input type={"submit"} value={t("Create")} className={"btn btn-success"}
-                                   style={{"width": "100%"}}/>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <div className="container py-4">
 
-    )
+            <h2 className="fw-bold mb-4 text-center">
+                {t("Create criteria")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-6">
+
+                    <div className="card shadow-sm border-0 p-4">
+
+                        <form onSubmit={handleSubmit}>
+
+                            {/* TITLE */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Title")}
+                                </label>
+                                <input
+                                    required
+                                    type="text"
+                                    className="form-control"
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    placeholder={t("Title")}
+                                />
+                            </div>
+
+                            {/* DESCRIPTION */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Description")}
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    placeholder={t("Description")}
+                                />
+                            </div>
+
+                            {/* BUTTON */}
+                            <button
+                                type="submit"
+                                className="btn btn-success w-100"
+                                disabled={isSaving}
+                            >
+                                {isSaving ? "Saving..." : t("Create")}
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    );
 }
 export default AddCriteria

@@ -38,51 +38,97 @@ const Criteria = () => {
     }
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
+
             {modalOpen &&
-                <ConfirmDelete modalOpen={modalOpen}
-                               setModalOpen={setModalOpen}
-                               entityForDelete={entityForDelete}
-                               setEntityForDelete={setEntityForDelete}
-                               functionToExecute ={deleteCriteriaAsync}/>}
-            <div className={"row"}>
-                <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    <Link to={"/criteria/add"} className={"btn btn-outline-dark mt-3"}>{t("Create")}</Link>
-                </div>
-                <div className={"col-md-10 mx-auto mt-3"}>
-                    <h1 className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("CRITERIA MANAGER")}</h1>
-                    {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
-                    {error && <h3 style={{"color": "red"}}>{error}</h3>}
-                    <table className={"table table-hover"}>
-                        <thead className={"text-white bg-dark text-center"}>
+                <ConfirmDelete
+                    modalOpen={modalOpen}
+                    setModalOpen={setModalOpen}
+                    entityForDelete={entityForDelete}
+                    setEntityForDelete={setEntityForDelete}
+                    functionToExecute={deleteCriteriaAsync}
+                />
+            }
+
+            {/* HEADER */}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+
+                <h2 className="mb-0 fw-bold">
+                    {t("CRITERIA MANAGER")}
+                </h2>
+
+                <Link to="/criteria/add" className="btn btn-dark">
+                    + {t("Create")}
+                </Link>
+
+            </div>
+
+            {/* STATUS */}
+            {isLoading && <div className="alert alert-info">Loading...</div>}
+            {error && <div className="alert alert-danger">{error}</div>}
+
+            {/* TABLE */}
+            <div className="card shadow-sm border-0">
+                <div className="table-responsive">
+
+                    <table className="table table-hover align-middle mb-0">
+
+                        <thead className="table-dark text-center">
                         <tr>
-                            <th scope={"col"}>#</th>
-                            <th scope={"col"}>{t("Title")}</th>
-                            <th scope={"col"} width={"20"}>{t("Description")}</th>
-                            <th scope={"col"}>{t("Actions")}</th>
+                            <th>#</th>
+                            <th>{t("Title")}</th>
+                            <th>{t("Description")}</th>
+                            <th>{t("Actions")}</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {criteria && criteria.map((criteria, id) => (
-                            <tr key={id}>
-                                <td>{id + 1}</td>
-                                <td>{criteria.name}</td>
-                                <td width="50%">{criteria.description}</td>
-                                <td>
-                                    <Link to={`/criteria/edit/${criteria.id}`}
-                                          className="btn btn-small btn-primary mx-2 mb-1">{t("Edit")}</Link>
-                                    <button type="button" onClick={() => handleDeleteButton(criteria)}
-                                            className="btn btn-small btn-danger mb-1">{t("Delete")}
-                                    </button>
+
+                        <tbody className="text-center">
+
+                        {criteria?.map((item, idx) => (
+                            <tr key={item.id}>
+
+                                <td className="text-muted">
+                                    {idx + 1}
                                 </td>
+
+                                <td className="fw-semibold">
+                                    {item.name}
+                                </td>
+
+                                <td className="text-muted small" style={{ maxWidth: "400px" }}>
+                                    {item.description}
+                                </td>
+
+                                <td>
+                                    <div className="d-flex gap-2 justify-content-center">
+
+                                        <Link
+                                            to={`/criteria/edit/${item.id}`}
+                                            className="btn btn-sm btn-primary"
+                                        >
+                                            {t("Edit")}
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleDeleteButton(item)}
+                                            className="btn btn-sm btn-danger"
+                                        >
+                                            {t("Delete")}
+                                        </button>
+
+                                    </div>
+                                </td>
+
                             </tr>
                         ))}
+
                         </tbody>
                     </table>
+
                 </div>
             </div>
-        </div>
 
-    )
+        </div>
+    );
 }
 export default Criteria

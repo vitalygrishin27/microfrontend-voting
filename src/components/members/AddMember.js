@@ -91,7 +91,7 @@ const AddMember = () => {
     }
 
     return (
-        <div>
+        <div className="container py-4">
             {modalOpen && <AddPerformance setOpenModal={setModalOpen}/>}
             {editModalOpen &&
                 <EditPerformance performanceToEdit={performanceToEdit} setEditOpenModal={setEditModalOpen}/>}
@@ -101,98 +101,208 @@ const AddMember = () => {
                                entityForDelete={entityForDelete}
                                setEntityForDelete={setEntityForDelete}
                                functionToExecute ={unselectPerformance}/>}
-            <div className={"container"}>
-                <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>{t("Add")} {t("new")} {t("member")}</h3>
-                    <div className={"col-md-6 shadow mx-auto p-5"}>
+            <h2 className="fw-bold text-center mb-4">
+                {t("Add")} {t("member")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-7">
+
+                    <div className="card shadow-sm border-0 p-4">
+
                         <form onSubmit={handleSubmit}>
-                            <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={t("Last name")} className={"form-control"}
-                                       value={lastName} onChange={e => setLastName(e.target.value)}/>
+
+                            {/* LAST NAME */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Last name")}
+                                </label>
+                                <input
+                                    required
+                                    type="text"
+                                    className="form-control"
+                                    value={lastName}
+                                    onChange={e => setLastName(e.target.value)}
+                                />
                             </div>
 
-                            <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={t("Name")} className={"form-control"}
-                                       value={firstName} onChange={e => setFirstName(e.target.value)}/>
+                            {/* FIRST NAME */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Name")}
+                                </label>
+                                <input
+                                    required
+                                    type="text"
+                                    className="form-control"
+                                    value={firstName}
+                                    onChange={e => setFirstName(e.target.value)}
+                                />
                             </div>
 
-                            <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={t("Second name")} className={"form-control"}
-                                       value={secondName} onChange={e => setSecondName(e.target.value)}/>
+                            {/* SECOND NAME */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Second name")}
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={secondName}
+                                    onChange={e => setSecondName(e.target.value)}
+                                />
                             </div>
 
-                            <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={t("Institution/Place")} className={"form-control"}
-                                       value={description} onChange={e => setDescription(e.target.value)}/>
+                            {/* DESCRIPTION */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Institution/Place")}
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                />
                             </div>
 
-                            <div className={"form-group mb-2"}>
-                                <select required id="combo" className={"form-control"}
-                                        value={selectedContest} onChange={e => setSelectedContest(e.target.value)}>
-                                    <option value={''}> -- {t("select")} {t("contest")} --</option>
-                                    {contests && contests.map((contest, id) => (
+                            {/* CONTEST */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Contest")}
+                                </label>
 
-                                        <option key={id} value={contest.id} className={"mr-1"}> {contest.name}</option>
+                                <select
+                                    required
+                                    className="form-select"
+                                    value={selectedContest}
+                                    onChange={e => setSelectedContest(e.target.value)}
+                                >
+                                    <option value="">
+                                        -- {t("select")} {t("contest")} --
+                                    </option>
 
+                                    {contests?.map(contest => (
+                                        <option key={contest.id} value={contest.id}>
+                                            {contest.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
 
+                            {/* IMAGE */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    Photo
+                                </label>
 
-                            <div className={"form-group mb-2"}>
-                                <input id="imgInpMember" type={"file"} className={"form-control mb-3"}
-                                       onChange={e => setPreview(e.target.value)}/>
-                                <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
-                                     src={preview ? URL.createObjectURL(document.getElementById('imgInpMember').files[0]) : ""}
-                                     width={"100"}
-                                     height={"142"}/>
-                                <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                       value={t("Delete image")} className={"btn btn-dark mb-2"}
-                                       onClick={() => handleDeletePhoto()}/>
+                                <input
+                                    id="imgInpMember"
+                                    type="file"
+                                    className="form-control"
+                                    onChange={e => setPreview(e.target.value)}
+                                />
+
+                                {preview && (
+                                    <div className="text-center mt-3">
+                                        <img
+                                            src={
+                                                URL.createObjectURL(
+                                                    document.getElementById("imgInpMember").files[0]
+                                                )
+                                            }
+                                            alt="preview"
+                                            className="rounded"
+                                            style={{
+                                                width: "100px",
+                                                height: "140px",
+                                                objectFit: "cover"
+                                            }}
+                                        />
+                                    </div>
+                                )}
+
+                                {preview && (
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-dark mt-2 w-100"
+                                        onClick={handleDeletePhoto}
+                                    >
+                                        {t("Delete image")}
+                                    </button>
+                                )}
                             </div>
-                            <div>
-                                <button type="button" onClick={() => setModalOpen(true)}
-                                        className="btn btn-small btn-warning mb-1">{t("Add")} {t("performance")}
+
+                            {/* PERFORMANCE BUTTON */}
+                            <div className="mb-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setModalOpen(true)}
+                                    className="btn btn-warning w-100"
+                                >
+                                    {t("Add")} {t("performance")}
                                 </button>
                             </div>
 
-                            {!isEmpty(selectedPerformances) ? (
-                                <table className={"table table-hover"}>
-                                    <thead className={" text-center"}>
-                                    <tr>
-                                        <th scope={"col"}>{t("Title")}</th>
-                                        <th scope={"col"} style={{"textAlign": "right"}}>{t("Actions")}</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {selectedPerformances && selectedPerformances.map((performance, id) => (
-                                        <tr key={id}>
-                                            <td>{performance.name}</td>
-                                            <td style={{"textAlign": "right"}}>
-                                                <button type="button"
-                                                        onClick={() => handleEditPerformance(performance)}
-                                                        className="btn btn-sm btn-primary mx-2 mb-1">{t("Edit")}
-                                                </button>
-                                                <button type="button"
-                                                        onClick={() => handleDeletePerformance(performance)}
-                                                        className="btn btn-sm btn-danger mb-1">{t("Delete")}
-                                                </button>
-                                            </td>
+                            {/* PERFORMANCE TABLE */}
+                            {!isEmpty(selectedPerformances) && (
+                                <div className="mb-3">
+
+                                    <table className="table table-sm">
+                                        <thead>
+                                        <tr>
+                                            <th>{t("Title")}</th>
+                                            <th className="text-end">{t("Actions")}</th>
                                         </tr>
-                                    ))}
-                                    </tbody>
-                                </table>) : ''}
+                                        </thead>
 
-                            <div className={"form-group"}>
-                                <input type={"submit"} value={t("Create")} className={"btn btn-success"}
-                                       style={{"width": "100%"}}/>
-                            </div>
+                                        <tbody>
+                                        {selectedPerformances.map((performance, id) => (
+                                            <tr key={id}>
+                                                <td>{performance.name}</td>
+                                                <td className="text-end">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleEditPerformance(performance)}
+                                                        className="btn btn-sm btn-primary me-2"
+                                                    >
+                                                        {t("Edit")}
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDeletePerformance(performance)}
+                                                        className="btn btn-sm btn-danger"
+                                                    >
+                                                        {t("Delete")}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            )}
+
+                            {/* SUBMIT */}
+                            <button
+                                type="submit"
+                                className="btn btn-success w-100"
+                            >
+                                {t("Create")}
+                            </button>
+
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-    )
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    );
 }
 export default AddMember

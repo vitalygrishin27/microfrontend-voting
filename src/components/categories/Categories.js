@@ -47,59 +47,113 @@ const Categories = () => {
     }
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
+
             {modalOpen &&
-                <ConfirmDelete modalOpen={modalOpen}
-                               setModalOpen={setModalOpen}
-                               entityForDelete={entityForDelete}
-                               setEntityForDelete={setEntityForDelete}
-                               functionToExecute ={deleteCategoryAsync}/>}
-            <div className={"row"}>
-                <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    <Link to={"/categories/add"} className={"btn btn-outline-dark mt-3"}>{t("Create")}</Link>
+                <ConfirmDelete
+                    modalOpen={modalOpen}
+                    setModalOpen={setModalOpen}
+                    entityForDelete={entityForDelete}
+                    setEntityForDelete={setEntityForDelete}
+                    functionToExecute={deleteCategoryAsync}
+                />
+            }
+
+            {/* HEADER */}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+
+                <h2 className="mb-0 fw-bold">
+                    {t("CATEGORIES MANAGER")}
+                </h2>
+
+                <Link to="/categories/add" className="btn btn-dark">
+                    + {t("Create")}
+                </Link>
+
+            </div>
+
+            {/* STATUS */}
+            {isLoading && <div className="alert alert-info">Loading...</div>}
+            {error && (
+                <div className="alert alert-danger">
+                    {JSON.stringify(error)}
                 </div>
-                <div className={"col-md-10 mx-auto mt-3"}>
-                    <h1 className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("CATEGORIES MANAGER")}</h1>
-                    {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
-                    {error && <h3 style={{"color": "red"}}>{JSON.stringify(error)}</h3>}
-                    <table className={"table table-hover"}>
-                        <thead className={"text-white bg-dark text-center"}>
+            )}
+
+            {/* TABLE CARD */}
+            <div className="card shadow-sm border-0">
+                <div className="table-responsive">
+
+                    <table className="table table-hover align-middle mb-0">
+
+                        <thead className="table-dark text-center">
                         <tr>
-                            <th scope={"col"}>#</th>
-                            <th scope={"col"}>{t("Title")}</th>
-                            <th scope={"col"}>{t("Description")}</th>
-                            <th scope={"col"}>{t("Criteria")}</th>
-                            <th scope={"col"}>{t("Actions")}</th>
+                            <th>#</th>
+                            <th>{t("Title")}</th>
+                            <th>{t("Description")}</th>
+                            <th>{t("Criteria")}</th>
+                            <th>{t("Actions")}</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {categories && categories.map((category, id) => (
-                            <tr key={id}>
-                                <td>{id + 1}</td>
-                                <td>{category.name}</td>
-                                <td width="50%">{category.description}</td>
+
+                        <tbody className="text-center">
+
+                        {categories?.map((category, idx) => (
+                            <tr key={category.id}>
+
+                                <td className="text-muted">
+                                    {idx + 1}
+                                </td>
+
+                                <td className="fw-semibold">
+                                    {category.name}
+                                </td>
+
+                                <td className="text-muted small" style={{ maxWidth: "300px" }}>
+                                    {category.description}
+                                </td>
+
                                 <td>
-                                    {category.criteria && category.criteria.map((criteria, id) => (
-                                        <div key={id} className={"form-group mb-3"} style={{"textAlign": "center"}}>
-                                            {criteria.name}
-                                        </div>
+                                    {category.criteria?.map((c) => (
+                                        <span
+                                            key={c.id}
+                                            className="badge bg-secondary me-1 mb-1"
+                                        >
+                                        {c.name}
+                                    </span>
                                     ))}
                                 </td>
+
                                 <td>
-                                    <Link to={`/categories/edit/${category.id}`}
-                                          className="btn btn-small btn-primary mx-2 mb-1">{t("Edit")}</Link>
-                                    <button type="button" onClick={() => handleDeleteButton(category)}
-                                            className="btn btn-small btn-danger mb-1">{t("Delete")}
-                                    </button>
+                                    <div className="d-flex gap-2 justify-content-center">
+
+                                        <Link
+                                            to={`/categories/edit/${category.id}`}
+                                            className="btn btn-sm btn-primary"
+                                        >
+                                            {t("Edit")}
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleDeleteButton(category)}
+                                            className="btn btn-sm btn-danger"
+                                        >
+                                            {t("Delete")}
+                                        </button>
+
+                                    </div>
                                 </td>
+
                             </tr>
                         ))}
+
                         </tbody>
                     </table>
+
                 </div>
             </div>
-        </div>
 
-    )
+        </div>
+    );
 }
 export default Categories

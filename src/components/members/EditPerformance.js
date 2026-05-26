@@ -7,78 +7,126 @@ import {useTranslation} from "react-i18next";
 
 function EditPerformance({performanceToEdit, setEditOpenModal}) {
     const {t} = useTranslation();
+
     const [name, setName] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState({});
+    const [selectedCategory, setSelectedCategory] = useState("");
+
     const {categories} = useSelector(state => state.categories);
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (!categories) {
             dispatch(loadCategoriesAsync())
-        }// eslint-disable-next-line react-hooks/exhaustive-deps
+        }
     }, []);
 
     useEffect(() => {
         if (performanceToEdit) {
             setName(performanceToEdit.name);
+
             if (performanceToEdit.categoryId) {
                 setSelectedCategory(performanceToEdit.categoryId);
             } else {
-                setSelectedCategory(performanceToEdit.category.id);
+                setSelectedCategory(performanceToEdit.category?.id || "");
             }
-
         }
-    }, [performanceToEdit])
+    }, [performanceToEdit]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const updatedPerformance = {};
-        for (let key in performanceToEdit) {
-            updatedPerformance[key] = performanceToEdit[key]
-        }
-        updatedPerformance.name = name;
-        updatedPerformance.categoryId = selectedCategory;
+        const updatedPerformance = {
+            ...performanceToEdit,
+            name,
+            categoryId: selectedCategory
+        };
 
         dispatch(updateSelectedPerformance(updatedPerformance));
         setEditOpenModal(false);
     };
 
     return (
-        <div className="modalBackground">
-            <div className="modalContainer">
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
+        <div
+            className="modalBackground"
+            onClick={() => setEditOpenModal(false)}
+        >
+            <div
+                className="modalContainer"
+                onClick={(e) => e.stopPropagation()}
+            >
 
-                        <div className={"form-group mb-2"}>
-                            <select required id="combo" className={"form-control"}
-                                    value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-                                <option value={''}> -- {t("select category")} --</option>
-                                {categories && categories.map((category, id) => (
+                <div className="card border-0 shadow-sm p-3">
 
-                                    <option key={id} value={category.id} className={"mr-1"}> {category.name}</option>
+                    <h5 className="fw-bold text-center mb-4">
+                        {t("Edit performance")}
+                    </h5>
 
+                    <form onSubmit={handleSubmit}>
+
+                        {/* CATEGORY */}
+                        <div className="mb-3">
+                            <label className="form-label text-muted">
+                                {t("Category")}
+                            </label>
+
+                            <select
+                                className="form-select"
+                                value={selectedCategory}
+                                onChange={e => setSelectedCategory(e.target.value)}
+                            >
+                                <option value="">
+                                    -- {t("select category")} --
+                                </option>
+
+                                {categories?.map(category => (
+                                    <option
+                                        key={category.id}
+                                        value={category.id}
+                                    >
+                                        {category.name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className={"form-group mb-2 mt-3 mb-3"}>
-                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                   value={name} onChange={e => setName(e.target.value)}/>
+                        {/* TITLE */}
+                        <div className="mb-3">
+                            <label className="form-label text-muted">
+                                {t("Title")}
+                            </label>
+
+                            <input
+                                type="text"
+                                className="form-control"
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
                         </div>
 
-                    </div>
-                    <div className={"form-group"}>
-                        <button type="button" onClick={() => {
-                            setEditOpenModal(false)
-                        }}
-                                className="btn btn-small btn-danger mb-1">{t("Cancel")}
-                        </button>
-                        <input type={"submit"} value={t("Update")}
-                               className={"btn btn-small btn-primary mx-2 mb-1"}/>
+                        {/* ACTIONS */}
+                        <div className="d-flex gap-2 mt-4">
 
-                    </div>
-                </form>
+                            <button
+                                type="button"
+                                className="btn btn-outline-dark w-50"
+                                onClick={() => setEditOpenModal(false)}
+                            >
+                                {t("Cancel")}
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-50"
+                            >
+                                {t("Update")}
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
         </div>
     );

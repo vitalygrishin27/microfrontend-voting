@@ -126,7 +126,7 @@ const EditMember = () => {
     }
 
     return (
-        <div>
+        <div className="container py-4">
             {modalOpen && <AddPerformance setOpenModal={setModalOpen}/>}
             {editModalOpen &&
                 <EditPerformance performanceToEdit={performanceToEdit} setEditOpenModal={setEditModalOpen}/>}
@@ -136,104 +136,226 @@ const EditMember = () => {
                                entityForDelete={entityForDelete}
                                setEntityForDelete={setEntityForDelete}
                                functionToExecute ={unselectPerformance}/>}
-            <div className={"container"}>
-                {currentMember ? (
-                    <div className={"row"}>
-                        <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
-                        <div className={"col-md-6 shadow mx-auto p-5"}>
-                            {isSaving && <h3>{t("Saving...")}</h3>}
+            <h2 className="fw-bold text-center mb-4">
+                {t("Edit")} {t("member")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-7">
+
+                    {!currentMember ? (
+                        <div className="alert alert-danger text-center">
+                            Member with id {id} not found
+                        </div>
+                    ) : (
+                        <div className="card shadow-sm border-0 p-4">
+
+                            {isSaving && (
+                                <div className="alert alert-info">
+                                    Saving...
+                                </div>
+                            )}
+
                             <form onSubmit={handleSubmit}>
-                                <div className={"form-group mb-2"}>
-                                    <input type={"text"} placeholder={t("Last name")} className={"form-control"}
-                                           value={lastName} onChange={e => setLastName(e.target.value)}/>
-                                </div>
-                                <div className={"form-group mb-2"}>
-                                    <input type={"text"} placeholder={t("Name")} className={"form-control"}
-                                           value={firstName} onChange={e => setFirstName(e.target.value)}/>
-                                </div>
-                                <div className={"form-group mb-2"}>
-                                    <input type={"text"} placeholder={t("Second name")} className={"form-control"}
-                                           value={secondName} onChange={e => setSecondName(e.target.value)}/>
-                                </div>
-                                <div className={"form-group mb-2"}>
-                                    <input type={"text"} placeholder={t("Institution/Place")} className={"form-control"}
-                                           value={description} onChange={e => setDescription(e.target.value)}/>
+
+                                {/* LAST NAME */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Last name")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={lastName}
+                                        onChange={e => setLastName(e.target.value)}
+                                    />
                                 </div>
 
-                                <div className={"form-group mb-2"}>
-                                    <select required id="combo" className={"form-control"}
-                                            value={selectedContest} onChange={e => setSelectedContest(e.target.value)}>
-                                        <option value={''}> -- {t("select")} {t("contest")} --</option>
-                                        {contests && contests.map((contest, id) => (
+                                {/* FIRST NAME */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Name")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={firstName}
+                                        onChange={e => setFirstName(e.target.value)}
+                                    />
+                                </div>
 
-                                            <option key={id} value={contest.id}
-                                                    className={"mr-1"}> {contest.name}</option>
+                                {/* SECOND NAME */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Second name")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={secondName}
+                                        onChange={e => setSecondName(e.target.value)}
+                                    />
+                                </div>
 
+                                {/* DESCRIPTION */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Institution/Place")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* CONTEST */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Contest")}
+                                    </label>
+
+                                    <select
+                                        className="form-select"
+                                        value={selectedContest}
+                                        onChange={e => setSelectedContest(e.target.value)}
+                                    >
+                                        <option value="">
+                                            -- {t("select")} {t("contest")} --
+                                        </option>
+
+                                        {contests?.map(contest => (
+                                            <option key={contest.id} value={contest.id}>
+                                                {contest.name}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <div className={"form-group mb-2"}>
-                                    <input id="imgInpEditMember" type={"file"} className={"form-control mb-3"}
-                                           onChange={e => handleChangePhoto(e)}/>
-                                    <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
-                                         src={preview}
-                                         width={"100"}
-                                         height={"142"}/>
+                                {/* IMAGE */}
+                                <div className="mb-3">
+
+                                    <label className="form-label text-muted">
+                                        Photo
+                                    </label>
+
+                                    <input
+                                        id="imgInpEditMember"
+                                        type="file"
+                                        className="form-control"
+                                        onChange={handleChangePhoto}
+                                    />
+
+                                    {preview && (
+                                        <div className="text-center mt-3">
+                                            <img
+                                                src={preview}
+                                                alt="preview"
+                                                className="rounded"
+                                                style={{
+                                                    width: "100px",
+                                                    height: "140px",
+                                                    objectFit: "cover"
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {preview && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-dark mt-2 w-100"
+                                            onClick={handleDeletePhoto}
+                                        >
+                                            {t("Delete image")}
+                                        </button>
+                                    )}
+
                                 </div>
-                                <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                       value={t("Delete image")} className={"btn btn-dark mb-2"}
-                                       onClick={() => handleDeletePhoto()}
-                                />
-                                <div>
-                                    <button type="button" onClick={() => setModalOpen(true)}
-                                            className="btn btn-small btn-warning mb-1">{t("Add")} {t("performance")}
+
+                                {/* PERFORMANCE BUTTON */}
+                                <div className="mb-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setModalOpen(true)}
+                                        className="btn btn-warning w-100"
+                                    >
+                                        {t("Add")} {t("performance")}
                                     </button>
                                 </div>
 
-                                {!isEmpty(selectedPerformances) ? (
-                                    <table className={"table table-hover"}>
-                                        <thead className={" text-center"}>
-                                        <tr>
-                                            <th scope={"col"}>{t("Title")}</th>
-                                            <th scope={"col"} style={{"textAlign": "right"}}>{t("Actions")}</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {selectedPerformances && selectedPerformances.map((performance, id) => (
-                                            <tr key={id}>
-                                                <td>{performance.name}</td>
-                                                <td style={{"textAlign": "right"}}>
-                                                    <button type="button"
-                                                            onClick={() => handleEditPerformance(performance)}
-                                                            className="btn btn-sm btn-primary mx-2 mb-1">{t("Edit")}
-                                                    </button>
-                                                    <button type="button"
-                                                            onClick={() => handleDeletePerformance(performance)}
-                                                            className="btn btn-sm btn-danger mb-1">{t("Delete")}
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </table>) : ''}
+                                {/* PERFORMANCE TABLE */}
+                                {!isEmpty(selectedPerformances) && (
+                                    <div className="mb-3">
 
-                                <div className={"form-group"}>
-                                    <input type={"submit"} value={t("Update")} className={"btn btn-primary"}
-                                    />
-                                    <Link to={"/members"} className={"btn btn-danger mx-3"}
-                                          style={{"textAlign": "center"}}>{t("Cancel")}</Link>
+                                        <table className="table table-sm">
+                                            <thead>
+                                            <tr>
+                                                <th>{t("Title")}</th>
+                                                <th className="text-end">{t("Actions")}</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {selectedPerformances.map((performance, id) => (
+                                                <tr key={id}>
+                                                    <td>{performance.name}</td>
+                                                    <td className="text-end">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleEditPerformance(performance)}
+                                                            className="btn btn-sm btn-primary me-2"
+                                                        >
+                                                            {t("Edit")}
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeletePerformance(performance)}
+                                                            className="btn btn-sm btn-danger"
+                                                        >
+                                                            {t("Delete")}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                )}
+
+                                {/* ACTIONS */}
+                                <div className="d-flex gap-2">
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary flex-grow-1"
+                                    >
+                                        {t("Update")}
+                                    </button>
+
+                                    <Link
+                                        to="/members"
+                                        className="btn btn-outline-danger flex-grow-1"
+                                    >
+                                        {t("Cancel")}
+                                    </Link>
+
                                 </div>
+
                             </form>
+
                         </div>
-                    </div>
-                ) : (
-                    <h1 className={"display-3 text-center"}>Member with {id} not found</h1>
-                )}
+                    )}
+
+                </div>
 
             </div>
-        </div>
 
-    )
+        </div>
+    );
 }
 export default EditMember

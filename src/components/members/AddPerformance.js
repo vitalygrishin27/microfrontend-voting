@@ -6,70 +6,125 @@ import {uid} from "uid";
 import {changeSelectedPerformances} from "../../redux/reducers/members/member.thunks";
 import {useTranslation} from "react-i18next";
 
-function AddPerformance({setOpenModal}) {
-    const {t} = useTranslation();
+function AddPerformance({ setOpenModal }) {
+    const { t } = useTranslation();
+
     const [name, setName] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState({});
-    const {categories} = useSelector(state => state.categories);
+    const [selectedCategory, setSelectedCategory] = useState("");
+
+    const { categories } = useSelector(state => state.categories);
     const dispatch = useDispatch();
+
     useEffect(() => {
         if (!categories) {
-            dispatch(loadCategoriesAsync())
-        }// eslint-disable-next-line react-hooks/exhaustive-deps
+            dispatch(loadCategoriesAsync());
+        }
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const data = {
             tempId: uid(),
-            name: name,
+            name,
             categoryId: selectedCategory,
-        }
-        const changePerformances = {
+        };
+
+        dispatch(changeSelectedPerformances({
             performance: data,
             needToAdd: true,
-        }
+        }));
 
-        dispatch(changeSelectedPerformances(changePerformances));
+        setName("");
+        setSelectedCategory("");
         setOpenModal(false);
     };
 
     return (
-        <div className="modalBackground">
-            <div className="modalContainer">
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <h3 className={"display-7 text-center"}>{t("Add")} {t("performance")}</h3>
+        <div
+            className="modalBackground"
+            onClick={() => setOpenModal(false)}
+        >
+            <div
+                className="modalContainer"
+                onClick={(e) => e.stopPropagation()}
+            >
 
-                        <div className={"form-group mb-2"}>
-                            <select required id="combo" className={"form-control"}
-                                    value={selectedCategory} onChange={e => setSelectedCategory(e.target.value)}>
-                                <option value={''}> -- {t("select category")} --</option>
-                                {categories && categories.map((category, id) => (
+                <div className="card border-0 shadow-sm p-3">
 
-                                    <option key={id} value={category.id} className={"mr-1"}> {category.name}</option>
+                    <h5 className="fw-bold text-center mb-4">
+                        {t("Add")} {t("performance")}
+                    </h5>
 
+                    <form onSubmit={handleSubmit}>
+
+                        {/* CATEGORY */}
+                        <div className="mb-3">
+                            <label className="form-label text-muted">
+                                {t("Category")}
+                            </label>
+
+                            <select
+                                required
+                                className="form-select"
+                                value={selectedCategory}
+                                onChange={e => setSelectedCategory(e.target.value)}
+                            >
+                                <option value="">
+                                    -- {t("select category")} --
+                                </option>
+
+                                {categories?.map(category => (
+                                    <option
+                                        key={category.id}
+                                        value={category.id}
+                                    >
+                                        {category.name}
+                                    </option>
                                 ))}
                             </select>
                         </div>
 
-                        <div className={"form-group mb-2 mt-3 mb-3"}>
-                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                   value={name} onChange={e => setName(e.target.value)}/>
+                        {/* TITLE */}
+                        <div className="mb-3">
+                            <label className="form-label text-muted">
+                                {t("Title")}
+                            </label>
+
+                            <input
+                                required
+                                type="text"
+                                className="form-control"
+                                placeholder={t("Title")}
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                            />
                         </div>
 
-                    </div>
-                    <div className={"form-group"}>
-                        <button type="button" onClick={() => {
-                            setOpenModal(false)
-                        }}
-                                className="btn btn-small btn-danger mb-1">{t("Cancel")}
-                        </button>
-                        <input type={"submit"} value={t("Create")}
-                               className={"btn btn-small btn-primary mx-2 mb-1"}/>
+                        {/* ACTIONS */}
+                        <div className="d-flex gap-2 mt-4">
 
-                    </div>
-                </form>
+                            <button
+                                type="button"
+                                className="btn btn-outline-danger w-50"
+                                onClick={() => setOpenModal(false)}
+                            >
+                                {t("Cancel")}
+                            </button>
+
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-50"
+                            >
+                                {t("Create")}
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
             </div>
         </div>
     );

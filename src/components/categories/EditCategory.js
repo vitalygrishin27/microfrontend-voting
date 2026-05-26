@@ -68,47 +68,125 @@ const EditCategory = () => {
 
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
 
-            {currentCategory ? (
-                <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
-                    <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>{t("Saving...")}</h3>}
-                        <form onSubmit={handleSubmit}>
-                            <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                       value={name} onChange={e => setName(e.target.value)}/>
-                            </div>
-                            <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={t("Description")} className={"form-control"}
-                                       value={description} onChange={e => setDescription(e.target.value)}/>
-                            </div>
-                            <div style={{"display": !isEmpty(criteria) ? "inline-block" : "none"}}>
-                                {t("Criteria")}
-                            </div>
-                            {criteria && criteria.map((criteria, id) => (
-                                <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
-                                    <input type={"checkbox"} className={"mr-1"}
-                                           checked={selectedCriteria.includes(criteria)}
-                                           onChange={e => handleChangeCriteriaToCategory(e.target.checked, criteria)}/> {criteria.name}
+            <h2 className="fw-bold mb-4 text-center">
+                {t("Edit")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-6">
+
+                    {!currentCategory ? (
+                        <div className="alert alert-danger text-center">
+                            Category with id {id} not found
+                        </div>
+                    ) : (
+                        <div className="card shadow-sm border-0 p-4">
+
+                            {isSaving && (
+                                <div className="alert alert-info">
+                                    Saving...
                                 </div>
-                            ))}
+                            )}
 
-                            <div className={"form-group"}>
-                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}/>
-                                <Link to={"/categories"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
-                            </div>
-                        </form>
-                    </div>
+                            <form onSubmit={handleSubmit}>
+
+                                {/* NAME */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Title")}
+                                    </label>
+                                    <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* DESCRIPTION */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Description")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* CRITERIA */}
+                                {!isEmpty(criteria) && (
+                                    <div className="mb-3">
+
+                                        <label className="form-label text-muted">
+                                            {t("Criteria")}
+                                        </label>
+
+                                        <div className="border rounded p-3 bg-light">
+
+                                            {criteria?.map((item) => (
+                                                <div
+                                                    key={item.id}
+                                                    className="form-check mb-2"
+                                                >
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="checkbox"
+                                                        checked={selectedCriteria?.includes(item)}
+                                                        onChange={e =>
+                                                            handleChangeCriteriaToCategory(
+                                                                e.target.checked,
+                                                                item
+                                                            )
+                                                        }
+                                                    />
+
+                                                    <label className="form-check-label">
+                                                        {item.name}
+                                                    </label>
+                                                </div>
+                                            ))}
+
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* BUTTONS */}
+                                <div className="d-flex gap-2">
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary flex-grow-1"
+                                        disabled={isSaving}
+                                    >
+                                        {isSaving ? "Updating..." : t("Update")}
+                                    </button>
+
+                                    <Link
+                                        to="/categories"
+                                        className="btn btn-outline-danger flex-grow-1"
+                                    >
+                                        {t("Cancel")}
+                                    </Link>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+                    )}
+
                 </div>
-            ) : (
-                <h1 className={"display-3 text-center"}>Category with {id} not found</h1>
-            )}
+
+            </div>
 
         </div>
-
-    )
+    );
 }
 export default EditCategory

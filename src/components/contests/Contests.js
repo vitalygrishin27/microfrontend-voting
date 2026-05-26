@@ -42,67 +42,134 @@ const Contests = () => {
     }
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
+
             {modalOpen &&
-                <ConfirmDelete modalOpen={modalOpen}
-                               setModalOpen={setModalOpen}
-                               entityForDelete={entityForDelete}
-                               setEntityForDelete={setEntityForDelete}
-                               functionToExecute ={deleteContestAsync}/>}
-            <div className={"row"}>
-                <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    <Link to={"/contests/add"} className={"btn btn-outline-dark mt-3"}>{t("Create")}</Link>
-                </div>
-                <div className={"col-md-10 mx-auto mt-3"}>
-                    <h1 className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("CONTESTS MANAGER")}</h1>
-                    {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
-                    {error && <h3 style={{"color": "red"}}>{error}</h3>}
-                    <table className={"table table-hover"}>
-                        <thead className={"text-white bg-dark text-center"}>
+                <ConfirmDelete
+                    modalOpen={modalOpen}
+                    setModalOpen={setModalOpen}
+                    entityForDelete={entityForDelete}
+                    setEntityForDelete={setEntityForDelete}
+                    functionToExecute={deleteContestAsync}
+                />
+            }
+
+            {/* HEADER */}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+
+                <h2 className="mb-0 fw-bold">
+                    {t("CONTESTS MANAGER")}
+                </h2>
+
+                <Link to="/contests/add" className="btn btn-dark">
+                    + {t("Create")}
+                </Link>
+
+            </div>
+
+            {/* STATUS */}
+            {isLoading && <div className="alert alert-info">Loading...</div>}
+            {error && <div className="alert alert-danger">{error}</div>}
+
+            {/* TABLE */}
+            <div className="card shadow-sm border-0">
+                <div className="table-responsive">
+
+                    <table className="table table-hover align-middle mb-0">
+
+                        <thead className="table-dark text-center">
                         <tr>
-                            <th scope={"col"}>#</th>
-                            <th scope={"col"}>{t("Photo")}</th>
-                            <th scope={"col"}>{t("Title")}</th>
-                            <th scope={"col"}>{t("Description")}</th>
-                            <th scope={"col"}>{t("Categories")}</th>
-                            <th scope={"col"}>{t("Actions")}</th>
+                            <th>#</th>
+                            <th>{t("Photo")}</th>
+                            <th>{t("Title")}</th>
+                            <th>{t("Description")}</th>
+                            <th>{t("Categories")}</th>
+                            <th>{t("Actions")}</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {contests && contests.map((contest, id) => (
-                            <tr key={id}>
-                                <td>{id + 1}</td>
-                                <td><img alt="preview" style={{"display": contest.photo ? "inline-block" : "none"}}
-                                         src={contest.photo ? contest.photo : ""}
-                                         width={"50"}
-                                         height={"71"}/></td>
-                                <td>{contest.name}</td>
-                                <td>{contest.description}</td>
+
+                        <tbody className="text-center">
+
+                        {contests?.map((contest, idx) => (
+                            <tr key={contest.id}>
+
+                                <td className="text-muted">
+                                    {idx + 1}
+                                </td>
+
                                 <td>
-                                    {contest.categories && contest.categories.map((category, id) => (
-                                        <div key={id} className={"form-group mb-3"} style={{"textAlign": "center"}}>
-                                            {category.name}
-                                        </div>
+                                    {contest.photo ? (
+                                        <img
+                                            src={contest.photo}
+                                            alt="contest"
+                                            className="rounded"
+                                            style={{
+                                                width: "45px",
+                                                height: "60px",
+                                                objectFit: "cover"
+                                            }}
+                                        />
+                                    ) : (
+                                        <span className="text-muted">—</span>
+                                    )}
+                                </td>
+
+                                <td className="fw-semibold">
+                                    {contest.name}
+                                </td>
+
+                                <td className="text-muted small" style={{ maxWidth: "300px" }}>
+                                    {contest.description}
+                                </td>
+
+                                <td>
+                                    {contest.categories?.map((category) => (
+                                        <span
+                                            key={category.id}
+                                            className="badge bg-secondary me-1 mb-1"
+                                        >
+                                        {category.name}
+                                    </span>
                                     ))}
                                 </td>
+
                                 <td>
-                                    <Link to={`/contests/edit/${contest.id}`}
-                                          className="btn btn-small btn-primary mb-1">{t("Edit")}</Link>
-                                    <button type="button" onClick={() => handleDeleteButton(contest)}
-                                            className="btn btn-small btn-danger mx-2 mb-1">{t("Delete")}
-                                    </button>
-                                    <Link to={`/contests/sort/${contest.id}`}
-                                          className="btn btn-small btn-warning mb-1">{t("ONLINE")}
-                                    </Link>
+                                    <div className="d-flex gap-2 justify-content-center flex-wrap">
+
+                                        <Link
+                                            to={`/contests/edit/${contest.id}`}
+                                            className="btn btn-sm btn-primary"
+                                        >
+                                            {t("Edit")}
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleDeleteButton(contest)}
+                                            className="btn btn-sm btn-danger"
+                                        >
+                                            {t("Delete")}
+                                        </button>
+
+                                        <Link
+                                            to={`/contests/sort/${contest.id}`}
+                                            className="btn btn-sm btn-warning"
+                                        >
+                                            {t("ONLINE")}
+                                        </Link>
+
+                                    </div>
                                 </td>
+
                             </tr>
                         ))}
+
                         </tbody>
                     </table>
+
                 </div>
             </div>
-        </div>
 
-    )
+        </div>
+    );
 }
 export default Contests

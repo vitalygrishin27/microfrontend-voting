@@ -92,58 +92,155 @@ const EditContest = () => {
     }
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
+
+            <h2 className="fw-bold text-center mb-4">
+                {t("Edit")} {t("contest")}
+            </h2>
 
             {currentContest ? (
-                <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
-                    <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>{t("Saving...")}</h3>}
-                        <form onSubmit={handleSubmit}>
-                            <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={t("Name")} className={"form-control"}
-                                       value={name} onChange={e => setName(e.target.value)}/>
-                            </div>
-                            <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={t("Description")} className={"form-control"}
-                                       value={description} onChange={e => setDescription(e.target.value)}/>
-                            </div>
-                            {categories && categories.map((category, id) => (
-                                <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
-                                    <input type={"checkbox"} className={"mr-1"}
-                                           checked={selectedCategories.includes(category)}
-                                           onChange={e => handleChangeCategoriesToContest(e.target.checked, category)}/> {category.name}
+                <div className="row justify-content-center">
+
+                    <div className="col-md-7">
+
+                        <div className="card shadow-sm border-0 p-4">
+
+                            {isSaving && (
+                                <div className="alert alert-info">
+                                    {t("Saving...")}
                                 </div>
-                            ))}
+                            )}
 
-                            <div className={"form-group mb-2"}>
-                                <input id="imgInpEditContest" type={"file"} className={"form-control mb-3"}
-                                       onChange={e => handleChangePhoto(e)}/>
-                                <img alt="preview" style={{"display": preview ? "inline-block" : "none"}}
-                                     src={preview}
-                                     width={"100"}
-                                     height={"142"}/>
-                            </div>
-                            <input style={{"display": preview ? "inline-block" : "none"}} type={"button"}
-                                   value={t("Delete image")} className={"btn btn-dark mb-2"}
-                                   onClick={() => handleDeletePhoto()}
-                            />
+                            <form onSubmit={handleSubmit}>
 
-                            <div className={"form-group"}>
-                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}
-                                />
-                                <Link to={"/contests"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
-                            </div>
-                        </form>
+                                {/* NAME */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Name")}
+                                    </label>
+
+                                    <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* DESCRIPTION */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Description")}
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* CATEGORIES */}
+                                <div className="mb-2 text-muted">
+                                    {t("Categories")}
+                                </div>
+
+                                <div className="mb-3">
+                                    {categories?.map(category => (
+                                        <div key={category.id} className="form-check mb-2">
+
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                checked={selectedCategories.includes(category)}
+                                                onChange={e =>
+                                                    handleChangeCategoriesToContest(
+                                                        e.target.checked,
+                                                        category
+                                                    )
+                                                }
+                                            />
+
+                                            <label className="form-check-label">
+                                                {category.name}
+                                            </label>
+
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* IMAGE */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Photo")}
+                                    </label>
+
+                                    <input
+                                        id="imgInpEditContest"
+                                        type="file"
+                                        className="form-control"
+                                        onChange={handleChangePhoto}
+                                    />
+
+                                    {preview && (
+                                        <div className="text-center mt-3">
+                                            <img
+                                                src={preview}
+                                                alt="preview"
+                                                width="120"
+                                                height="160"
+                                                className="rounded"
+                                                style={{ objectFit: "cover" }}
+                                            />
+                                        </div>
+                                    )}
+
+                                    {preview && (
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-dark w-100 mt-2"
+                                            onClick={handleDeletePhoto}
+                                        >
+                                            {t("Delete image")}
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* ACTIONS */}
+                                <div className="d-flex gap-2">
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary flex-grow-1"
+                                    >
+                                        {t("Update")}
+                                    </button>
+
+                                    <Link
+                                        to="/contests"
+                                        className="btn btn-outline-danger flex-grow-1"
+                                    >
+                                        {t("Cancel")}
+                                    </Link>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
                     </div>
+
                 </div>
             ) : (
-                <h1 className={"display-3 text-center"}>Contest with {id} not found</h1>
+                <div className="alert alert-danger text-center">
+                    Contest with {id} not found
+                </div>
             )}
 
         </div>
-
-    )
+    );
 }
 export default EditContest

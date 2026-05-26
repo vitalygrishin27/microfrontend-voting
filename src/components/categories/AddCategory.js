@@ -57,39 +57,104 @@ const AddCategory = () => {
     }
 
     return (
-        <div className={"container"}>
-            <div className={"row"}>
-                <h3 className={"display-7 text-center"}>{t("Create category")}</h3>
-                <div className={"col-md-6 shadow mx-auto p-5"}>
-                    <form onSubmit={handleSubmit}>
-                        <div className={"form-group mb-2"}>
-                            <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                   value={name} onChange={e => setName(e.target.value)}/>
-                        </div>
+        <div className="container py-4">
 
-                        <div className={"form-group mb-2"}>
-                            <input type={"text"} placeholder={t("Description")} className={"form-control mb-3"}
-                                   value={description} onChange={e => setDescription(e.target.value)}/>
-                        </div>
-                        <div style={{"display": !isEmpty(criteria) ? "inline-block" : "none"}}>
-                            {t("Criteria")}
-                        </div>
-                        {criteria && criteria.map((criteria, id) => (
-                            <div key={id} className={"form-group mb-3"} style={{"textAlign": "left"}}>
-                                <input type={"checkbox"} className={"mr-1"}
-                                       checked={selectedCriteria.includes(criteria)}
-                                       onChange={e => handleChangeCriteriaToCategory(e.target.checked, criteria)}/> {criteria.name}
+            <h2 className="fw-bold mb-4 text-center">
+                {t("Create category")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-6">
+
+                    <div className="card shadow-sm border-0 p-4">
+
+                        <form onSubmit={handleSubmit}>
+
+                            {/* NAME */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Title")}
+                                </label>
+                                <input
+                                    required
+                                    type="text"
+                                    className="form-control"
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    placeholder={t("Title")}
+                                />
                             </div>
-                        ))}
-                        <div className={"form-group"}>
-                            <input type={"submit"} value={t("Create")} className={"btn btn-success"}
-                                   style={{"width": "100%"}}/>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
-    )
+                            {/* DESCRIPTION */}
+                            <div className="mb-3">
+                                <label className="form-label text-muted">
+                                    {t("Description")}
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    placeholder={t("Description")}
+                                />
+                            </div>
+
+                            {/* CRITERIA */}
+                            {!isEmpty(criteria) && (
+                                <div className="mb-3">
+
+                                    <label className="form-label text-muted">
+                                        {t("Criteria")}
+                                    </label>
+
+                                    <div className="border rounded p-3 bg-light">
+
+                                        {criteria?.map((item) => (
+                                            <div
+                                                key={item.id}
+                                                className="form-check mb-2"
+                                            >
+                                                <input
+                                                    className="form-check-input"
+                                                    type="checkbox"
+                                                    checked={selectedCriteria?.includes(item)}
+                                                    onChange={e =>
+                                                        handleChangeCriteriaToCategory(
+                                                            e.target.checked,
+                                                            item
+                                                        )
+                                                    }
+                                                />
+
+                                                <label className="form-check-label">
+                                                    {item.name}
+                                                </label>
+                                            </div>
+                                        ))}
+
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* BUTTON */}
+                            <button
+                                type="submit"
+                                className="btn btn-success w-100"
+                                disabled={isSaving}
+                            >
+                                {isSaving ? "Saving..." : t("Create")}
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    );
 }
 export default AddCategory

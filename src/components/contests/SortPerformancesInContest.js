@@ -110,86 +110,184 @@ const SortPerformancesInContest = () => {
     }
 
     return (
-        <div className={"container"}>
-            <div className={"row"}>
-                <div className={"col-md-12 mb-2"} style={{"textAlign": "right"}}>
-                    <input type={"button"} value={t("Remove assessment")}
-                           className={"btn btn-outline-danger mt-3"}
-                           onClick={() => handleRemoveAssessment(currentContest)}/>
-                </div>
-                <div className={"col-md-12"} style={{"textAlign": "right"}}>
-                    {t("Show marks")} <input type={"checkbox"} className={"mr-1 form-check-input"}
-                                      checked={showMarks}
-                                      onChange={() => showMarks ? setShowMarks(false) : setShowMarks(true)}/>
+        <div className="container py-4">
+
+            {/* HEADER ACTIONS */}
+            <div className="d-flex justify-content-between align-items-center mb-3">
+
+                <div>
+                    <h2 className="fw-bold mb-0">
+                        {t("PERFORMANCES MANAGER")}
+                    </h2>
+                    <small className="text-muted">
+                        {currentContest?.name}
+                    </small>
                 </div>
 
-                <div className={"col-md-10 mx-auto mt-3"}>
-                    <h1 id="rt" className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("PERFORMANCES MANAGER")}</h1>
-                    {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
-                    {orderWasChanged &&
-                        <h5 id="saveOrder" style={{"color": "red"}}>{t("You should save previous order first and then reload data. To discard changes reload page (F5)")}</h5>}
+                <div className="text-end">
 
-                    {orderWasChanged &&
-                        <input type={"button"} value={t("PRESS  TO  SAVE  ORDER")} className={"btn btn-danger"}
-                               style={{"width": "100%"}} onClick={() => handleSaveOrder()}/>}
-                    {error && <h3 style={{"color": "red"}}>{error}</h3>}
-                    <table className={"table table-hover"}>
-                        <thead className={"text-white bg-dark text-center"}>
+                    <button
+                        className="btn btn-outline-danger"
+                        onClick={() => handleRemoveAssessment(currentContest)}
+                    >
+                        {t("Remove assessment")}
+                    </button>
+
+                </div>
+
+            </div>
+
+            {/* TOGGLE MARKS */}
+            <div className="d-flex justify-content-end align-items-center mb-3 gap-2">
+
+                <label className="form-check-label mb-0">
+                    {t("Show marks")}
+                </label>
+
+                <div className="form-check form-switch m-0">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        checked={showMarks}
+                        onChange={(e) => setShowMarks(e.target.checked)}
+                    />
+                </div>
+
+            </div>
+
+            {/* STATUS */}
+            {isLoading && (
+                <div className="alert alert-info">
+                    {t("Loading...")}
+                </div>
+            )}
+
+            {error && (
+                <div className="alert alert-danger">
+                    {error}
+                </div>
+            )}
+
+            {orderWasChanged && (
+                <div className="alert alert-warning">
+                    {t("You should save previous order first and reload data")}
+                </div>
+            )}
+
+            {/* SAVE ORDER */}
+            {orderWasChanged && (
+                <button
+                    className="btn btn-danger w-100 mb-3"
+                    onClick={handleSaveOrder}
+                >
+                    {t("PRESS TO SAVE ORDER")}
+                </button>
+            )}
+
+            {/* TABLE CARD */}
+            <div className="card shadow-sm border-0">
+
+                <div className="table-responsive">
+
+                    <table className="table table-hover align-middle mb-0">
+
+                        <thead className="table-dark text-center">
                         <tr>
-                            <th scope={"col"}>#</th>
-                            <th scope={"col"}>{t("Member")}</th>
-                            <th scope={"col"}>{t("Place")}</th>
-                            <th scope={"col"}>{t("Performance")}</th>
-                            <th scope={"col"}>{t("Category")}</th>
-                            {showMarks && currentContest &&
-                                currentContest.juryLastNames.sort().map((lastName, id) => (
-                                    <th key={id} scope={"col"}>{lastName}</th>
+                            <th>#</th>
+                            <th>{t("Member")}</th>
+                            <th>{t("Place")}</th>
+                            <th>{t("Performance")}</th>
+                            <th>{t("Category")}</th>
+
+                            {showMarks && currentContest?.juryLastNames
+                                ?.slice()
+                                ?.sort()
+                                ?.map((lastName, id) => (
+                                    <th key={id}>{lastName}</th>
                                 ))}
-                            <th scope={"col"}>{t("Submit for assessment")}</th>
+
+                            <th>{t("Submit")}</th>
                         </tr>
                         </thead>
+
                         <DragDropContext onDragEnd={handleOnDragEnd}>
                             <Droppable droppableId="characters">
+
                                 {(provided) => (
-                                    <tbody  {...provided.droppableProps} ref={provided.innerRef}>
-                                    {performances && performances.map((performance, index) => {
-                                        return (
-                                            <Draggable key={performance.id} draggableId={performance.id.toString()}
-                                                       index={index}>
-                                                {(provided) => (
-                                                    <tr className={getRowColor(performance)}
-                                                        ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                                        <td>{index + 1}</td>
-                                                        <td>{performance.fullName}</td>
-                                                        <td>{performance.place}</td>
-                                                        <td>{performance.name}</td>
-                                                        <td>{performance.category.name}</td>
-                                                        {showMarks && currentContest &&
-                                                            currentContest.juryLastNames.sort().map((lastName, id) => (
+                                    <tbody
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                    >
+
+                                    {performances?.map((performance, index) => (
+                                        <Draggable
+                                            key={performance.id}
+                                            draggableId={performance.id.toString()}
+                                            index={index}
+                                        >
+                                            {(provided) => (
+                                                <tr
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    className={
+                                                        getRowColor(performance) ||
+                                                        ""
+                                                    }
+                                                >
+
+                                                    <td>{index + 1}</td>
+                                                    <td>{performance.fullName}</td>
+                                                    <td>{performance.place}</td>
+                                                    <td>{performance.name}</td>
+                                                    <td>{performance.category?.name}</td>
+
+                                                    {showMarks &&
+                                                        currentContest?.juryLastNames
+                                                            ?.slice()
+                                                            ?.sort()
+                                                            ?.map((lastName, id) => (
                                                                 <td key={id}>
                                                                     {getMark(lastName, performance)}
                                                                 </td>
                                                             ))}
-                                                        <td><input type={"button"} value={t("Submit")}
-                                                                   className={activePerformance && activePerformance.id === performance.id?"btn btn-danger":"btn btn-success"}
-                                                                   style={{"width": "100%"}}
-                                                                   onClick={() => handleSubmit(currentContest, performance)}/>
-                                                        </td>
-                                                    </tr>
-                                                )}
-                                            </Draggable>
-                                        );
-                                    })}
+
+                                                    <td>
+                                                        <button
+                                                            className={
+                                                                activePerformance &&
+                                                                activePerformance.id === performance.id
+                                                                    ? "btn btn-danger w-100"
+                                                                    : "btn btn-success w-100"
+                                                            }
+                                                            onClick={() =>
+                                                                handleSubmit(currentContest, performance)
+                                                            }
+                                                        >
+                                                            {t("Submit")}
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                            )}
+                                        </Draggable>
+                                    ))}
+
                                     {provided.placeholder}
+
                                     </tbody>
                                 )}
+
                             </Droppable>
                         </DragDropContext>
-                    </table>
-                </div>
-            </div>
-        </div>
 
-    )
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    );
 }
 export default SortPerformancesInContest

@@ -56,36 +56,88 @@ const EditCriteria = () => {
 
 
     return (
-        <div className={"container"}>
+        <div className="container py-4">
 
-            {currentCriteria ? (
-                <div className={"row"}>
-                    <h3 className={"display-7 text-center"}>{t("Edit")}</h3>
-                    <div className={"col-md-6 shadow mx-auto p-5"}>
-                        {isSaving && <h3>{t("Saving...")}</h3>}
-                        <form onSubmit={handleSubmit}>
-                            <div className={"form-group mb-2"}>
-                                <input required type={"text"} placeholder={t("Title")} className={"form-control"}
-                                       value={name} onChange={e => setName(e.target.value)}/>
-                            </div>
-                            <div className={"form-group mb-2"}>
-                                <input type={"text"} placeholder={t("Description")} className={"form-control"}
-                                       value={description} onChange={e => setDescription(e.target.value)}/>
-                            </div>
-                            <div className={"form-group"}>
-                                <input type={"submit"} value={t("Update")} className={"btn btn-primary"}/>
-                                <Link to={"/criteria"} className={"btn btn-danger mx-3"}
-                                      style={{"textAlign": "center"}}>{t("Cancel")}</Link>
-                            </div>
-                        </form>
-                    </div>
+            <h2 className="fw-bold mb-4 text-center">
+                {t("Edit")}
+            </h2>
+
+            <div className="row justify-content-center">
+
+                <div className="col-md-6">
+
+                    {!currentCriteria ? (
+                        <div className="alert alert-danger text-center">
+                            Criteria with id {id} not found
+                        </div>
+                    ) : (
+                        <div className="card shadow-sm border-0 p-4">
+
+                            {isSaving && (
+                                <div className="alert alert-info">
+                                    Saving...
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit}>
+
+                                {/* TITLE */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Title")}
+                                    </label>
+                                    <input
+                                        required
+                                        type="text"
+                                        className="form-control"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* DESCRIPTION */}
+                                <div className="mb-3">
+                                    <label className="form-label text-muted">
+                                        {t("Description")}
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        value={description}
+                                        onChange={e => setDescription(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* BUTTONS */}
+                                <div className="d-flex gap-2">
+
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary flex-grow-1"
+                                        disabled={isSaving}
+                                    >
+                                        {isSaving ? "Updating..." : t("Update")}
+                                    </button>
+
+                                    <Link
+                                        to="/criteria"
+                                        className="btn btn-outline-danger flex-grow-1"
+                                    >
+                                        {t("Cancel")}
+                                    </Link>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+                    )}
+
                 </div>
-            ) : (
-                <h1 className={"display-3 text-center"}>Criteria with {id} not found</h1>
-            )}
+
+            </div>
 
         </div>
-
-    )
+    );
 }
 export default EditCriteria

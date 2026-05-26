@@ -7,7 +7,7 @@ i18n.use(Backend).use(LanguageDetector).use(initReactI18next).init({
     react: {
         useSuspense: false
     },
-    fallbackLng: 'ua',
+    fallbackLng: 'en',
     debug: false,
     detection: {
         order: ['querystring', 'cookie'],
