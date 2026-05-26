@@ -61,7 +61,7 @@ const Categories = () => {
                 <div className={"col-md-10 mx-auto mt-3"}>
                     <h1 className={"col-md-10 mx-auto mb-3"} style={{"textAlign": "center"}}>{t("CATEGORIES MANAGER")}</h1>
                     {isLoading && <h3 style={{"color": "red"}}>{t("Loading...")}</h3>}
-                    {error && <h3 style={{"color": "red"}}>{error}</h3>}
+                    {error && <h3 style={{"color": "red"}}>{JSON.stringify(error)}</h3>}
                     <table className={"table table-hover"}>
                         <thead className={"text-white bg-dark text-center"}>
                         <tr>
